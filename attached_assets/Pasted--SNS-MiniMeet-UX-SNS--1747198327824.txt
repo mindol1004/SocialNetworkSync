@@ -1,0 +1,328 @@
+# 심플하고 고급스러운 SNS 웹앱 개발 요청 - MiniMeet
+
+## 프로젝트 개요
+애플 스타일의 사용자 친화적인 UX와 미니멀하고 고급스러운 디자인을 갖춘 SNS 웹앱 "MiniMeet"을 개발해주세요. 이 앱은 모던하고 깔끔한 사용자 경험을 제공하면서도 필수적인 SNS 기능을 모두 포함해야 합니다.
+
+## 기술 스택
+- **프론트엔드**: 
+  - React, TypeScript
+  - Next.js (SSR/SSG)
+  - Tailwind CSS (스타일링)
+  - Zustand (상태 관리)
+  - Axios (HTTP 클라이언트)
+
+- **백엔드**: 
+  - Express.js (API 서버)
+  - Drizzle ORM (데이터베이스 ORM)
+
+- **인증 및 데이터베이스**: 
+  - Firebase Authentication
+  - Firebase Realtime Database
+  
+- **데이터베이스 (교체 가능한 설계)**:
+  - 주 데이터베이스: Firebase Realtime Database
+  - 대체 가능 옵션: PostgreSQL, MongoDB, MySQL
+  - 데이터 액세스 레이어를 통한 DB 추상화  
+
+- **기타**: 
+  - dotenv (환경 변수 관리)
+  - ESLint/Prettier (코드 품질)
+  - Jest/React Testing Library (테스트)
+
+## 아키텍처 및 개발 방식
+- **컴포넌트 아키텍처**: 재사용 가능한 UI 컴포넌트 기반 구조
+- **DDD(Domain-Driven Design)**: 도메인 중심 설계로 비즈니스 로직 구성
+- **MVVM 패턴**: Model-View-ViewModel 패턴 적용
+
+## 디자인 가이드라인
+- **스타일**: 미니멀리즘, 고급스러움, 부드러운 색상 전환
+- **색상 팔레트**: 
+  - 주 색상: 중성적인 색상(#F5F5F7, #FFFFFF)
+  - 강조 색상: 부드러운 파스텔 톤 또는 애플스러운 블루(#0071E3)
+  - 텍스트: 다크 모드(#1D1D1F), 라이트 모드(#86868B)
+- **타이포그래피**: San Francisco 또는 Inter와 같은 현대적이고 가독성 높은 산세리프 폰트
+- **요소**: 부드러운 그림자, 미묘한 그라데이션, 적절한 여백, 미니멀한 아이콘
+
+## 핵심 기능 상세 명세
+
+### 1. 사용자 인증 및 프로필 관리
+   - **회원가입/로그인**:
+     - 이메일/비밀번호 인증
+     - 소셜 로그인 (Google, Apple 계정)
+     - 2단계 인증 옵션
+     - 비밀번호 재설정 플로우
+     - 자동 로그인 유지 기능
+
+   - **사용자 프로필**:
+     - 프로필 이미지 업로드 및 편집 (크롭 기능 포함)
+     - 커버 이미지 설정
+     - 자기소개 및 개인 정보 설정
+     - 프로필 URL 커스터마이징
+     - 프로필 방문자 통계 (조회수)
+
+   - **계정 설정**:
+     - 알림 설정 (푸시, 이메일, 앱내 알림)
+     - 개인정보 보호 설정 (프로필 공개 범위)
+     - 차단/뮤트 사용자 관리
+     - 계정 삭제 및 데이터 다운로드
+     - 언어(다국어 설정 [한국어,영어]) 및 접근성 설정
+
+### 2. 피드 시스템 및 콘텐츠 관리
+   - **메인 피드**:
+     - 알고리즘 기반 개인화된 피드
+     - 시간순 피드 옵션
+     - 무한 스크롤 (성능 최적화)
+     - 피드 필터링 옵션 (최신순, 인기순, 관련성)
+     - 피드 새로고침 (Pull-to-refresh)
+
+   - **게시물 기능**:
+     - 다양한 형식의 게시물 (텍스트, 이미지, 링크)
+     - 멀티 이미지 업로드 (캐러셀)
+     - 이미지 편집 기능 (필터, 크롭, 조정)
+     - 위치 태그 및 사용자 태그
+     - 해시태그 시스템
+     - 게시물 예약 발행
+     - 드래프트 저장
+
+### 3. 소셜 상호작용
+   - **리액션 시스템**:
+     - 좋아요/반응 기능 (다양한 이모티콘)
+     - 좋아요 애니메이션 효과
+     - 게시물 반응 통계
+     - 반응한 사용자 목록 보기
+
+   - **댓글 시스템**:
+     - 댓글 및 대댓글 (무한 중첩)
+     - 댓글 좋아요
+     - 댓글 정렬 (인기순, 최신순)
+     - 댓글 작성자 태그 기능
+     - 댓글 숨기기/신고 기능
+
+   - **공유 기능**:
+     - 내부 공유 (DM으로 전송)
+     - 외부 공유 (링크 생성)
+     - 소셜 미디어 공유 통합
+     - 퍼가기 방지 기능
+
+   - **팔로우 시스템**:
+     - 사용자 팔로우/언팔로우
+     - 팔로워/팔로잉 관리
+     - 팔로우 추천 알고리즘
+     - 맞팔로우 표시
+     - 비공개 계정 팔로우 요청
+
+### 4. 메시징 및 알림
+   - **다이렉트 메시지**:
+     - 1:1 및 그룹 채팅
+     - 미디어 및 파일 공유
+     - 읽음 확인 기능
+     - 메시지 검색
+     - 메시지 삭제 및 회수
+
+   - **알림 시스템**:
+     - 실시간 푸시 알림
+     - 앱내 알림 센터
+     - 알림 카테고리 및 필터
+     - 알림 설정 커스터마이징
+     - 배지 카운터 및 읽음 표시
+
+### 5. 검색 및 탐색
+   - **검색 기능**:
+     - 통합 검색 (사용자, 게시물, 해시태그)
+     - 자동 완성 및 검색어 추천
+     - 검색 기록 관리
+     - 고급 검색 필터 (날짜, 유형, 인기도)
+     - 검색 결과 정렬 옵션
+
+   - **탐색 기능**:
+     - 트렌딩 주제 및 해시태그
+     - 카테고리별 콘텐츠 브라우징
+     - 위치 기반 콘텐츠 탐색
+     - 새로운 사용자 추천
+
+## 사용자 경험 가이드라인
+- 애플 스타일의 직관적이고 깔끔한 UX
+- 부드러운 애니메이션과 전환 효과
+- 최소한의 클릭으로 핵심 기능 접근
+- 반응형 디자인 (모바일, 태블릿, 데스크톱 대응)
+- 다크 모드/라이트 모드 지원
+- 접근성 가이드라인 준수 (WCAG 2.1)
+- 다국어 지원(한국어,영어)
+
+
+## 프로젝트 구조
+minimeet/
+├── .github/                        # GitHub 관련 설정
+│   ├── workflows/                  # GitHub Actions CI/CD 파이프라인
+│   │   ├── ci.yml                  # 지속적 통합 워크플로우
+│   │   └── deploy.yml              # 배포 워크플로우
+│   └── PULL_REQUEST_TEMPLATE.md    # PR 템플릿
+├── .husky/                         # Git hooks
+├── .vscode/                        # VS Code 설정
+├── client/                         # 프론트엔드 (Next.js)
+│   ├── .env.example                # 환경 변수 예제
+│   ├── .env.local                  # 로컬 환경 변수 (git ignore)
+│   ├── .env.production             # 프로덕션 환경 변수 (git ignore)
+│   ├── .eslintrc.json              # ESLint 설정
+│   ├── .prettierrc                 # Prettier 설정
+│   ├── jest.config.js              # Jest 설정
+│   ├── next.config.js              # Next.js 설정
+│   ├── package.json                # 패키지 정보 및 의존성
+│   ├── postcss.config.js           # PostCSS 설정
+│   ├── tailwind.config.js          # Tailwind CSS 설정
+│   ├── tsconfig.json               # TypeScript 설정
+│   ├── public/                     # 정적 파일
+│   │   ├── favicon.ico             # 파비콘
+│   │   ├── locales/                # 다국어 리소스
+│   │   │   ├── en/                 # 영어
+│   │   │   └── ko/                 # 한국어
+│   │   └── assets/                 # 이미지, 폰트 등
+│   └── src/
+│       ├── app/                    # Next.js App Router
+│       │   ├── [locale]/           # 다국어 라우팅
+│       │   │   ├── layout.tsx      # 기본 레이아웃
+│       │   │   ├── page.tsx        # 홈페이지
+│       │   │   ├── (auth)/         # 인증 관련 페이지 그룹
+│       │   │   │   ├── login/      # 로그인
+│       │   │   │   ├── signup/     # 회원가입
+│       │   │   │   └── forgot-password/ # 비밀번호 재설정
+│       │   │   ├── feed/           # 피드 페이지
+│       │   │   ├── explore/        # 탐색 페이지
+│       │   │   ├── messages/       # 메시지 페이지
+│       │   │   ├── notifications/  # 알림 페이지
+│       │   │   ├── profile/        # 프로필 페이지
+│       │   │   │   └── [username]/ # 사용자별 프로필
+│       │   │   └── settings/       # 설정 페이지
+│       │   └── api/                # API 라우트
+│       ├── assets/                 # 소스에서 사용하는 에셋
+│       │   ├── icons/              # SVG 아이콘
+│       │   └── images/             # 이미지 리소스
+│       ├── components/             # UI 컴포넌트
+│       │   ├── common/             # 공통 컴포넌트
+│       │   │   ├── Button/
+│       │   │   ├── Card/
+│       │   │   ├── Input/
+│       │   │   ├── Modal/
+│       │   │   └── ...
+│       │   ├── layout/             # 레이아웃 컴포넌트
+│       │   │   ├── Footer/
+│       │   │   ├── Header/
+│       │   │   ├── Sidebar/
+│       │   │   └── ...
+│       │   └── features/           # 기능별 컴포넌트
+│       │       ├── auth/           # 인증 관련
+│       │       ├── feed/           # 피드 관련
+│       │       ├── profile/        # 프로필 관련
+│       │       ├── messaging/      # 메시징 관련
+│       │       └── ...
+│       ├── config/                 # 앱 설정
+│       │   ├── constants.ts        # 상수
+│       │   ├── routes.ts           # 라우트 정의
+│       │   └── theme.ts            # 테마 설정
+│       ├── domain/                 # 도메인 로직 (DDD)
+│       │   ├── auth/               # 인증 도메인
+│       │   ├── post/               # 게시물 도메인
+│       │   ├── user/               # 사용자 도메인
+│       │   ├── message/            # 메시지 도메인
+│       │   └── notification/       # 알림 도메인
+│       ├── hooks/                  # 커스텀 훅
+│       │   ├── useAuth.ts
+│       │   ├── useFeed.ts
+│       │   ├── useForm.ts
+│       │   └── ...
+│       ├── services/               # 외부 서비스 연동
+│       │   ├── api/                # API 클라이언트
+│       │   │   ├── client.ts       # Axios 인스턴스 설정
+│       │   │   ├── endpoints.ts    # API 엔드포인트
+│       │   │   └── interceptors.ts # API 인터셉터
+│       │   ├── firebase/           # Firebase 서비스
+│       │   │   ├── auth.ts         # Firebase 인증
+│       │   │   ├── database.ts     # Firebase DB
+│       │   │   └── storage.ts      # Firebase 스토리지
+│       │   └── i18n/               # 다국어 서비스
+│       ├── store/                  # 상태 관리 (Zustand)
+│       │   ├── auth/               # 인증 상태
+│       │   ├── feed/               # 피드 상태
+│       │   ├── theme/              # 테마 상태
+│       │   └── ...
+│       ├── styles/                 # 글로벌 스타일
+│       │   ├── globals.css         # 글로벌 CSS
+│       │   └── animations.css      # 애니메이션
+│       ├── types/                  # 타입 정의
+│       │   ├── auth.types.ts
+│       │   ├── post.types.ts
+│       │   ├── user.types.ts
+│       │   └── ...
+│       └── utils/                  # 유틸리티 함수
+│           ├── date.ts             # 날짜 관련
+│           ├── format.ts           # 포맷팅 관련
+│           ├── validation.ts       # 유효성 검사
+│           └── ...
+├── server/                         # 백엔드 (Express.js)
+│   ├── .env.example                # 환경 변수 예제
+│   ├── .env                        # 환경 변수 (git ignore)
+│   ├── .eslintrc.json              # ESLint 설정
+│   ├── .prettierrc                 # Prettier 설정
+│   ├── jest.config.js              # Jest 설정
+│   ├── nodemon.json                # Nodemon 설정
+│   ├── package.json                # 패키지 정보 및 의존성
+│   ├── tsconfig.json               # TypeScript 설정
+│   └── src/
+│       ├── api/                    # API 라우트
+│       │   ├── auth/               # 인증 API
+│       │   ├── feed/               # 피드 API
+│       │   ├── messages/           # 메시지 API
+│       │   ├── notifications/      # 알림 API
+│       │   ├── posts/              # 게시물 API
+│       │   └── users/              # 사용자 API
+│       ├── config/                 # 서버 설정
+│       │   ├── database.ts         # DB 설정
+│       │   ├── env.ts              # 환경 변수 설정
+│       │   ├── firebase.ts         # Firebase 설정
+│       │   └── server.ts           # 서버 설정
+│       ├── domain/                 # 도메인 로직 (DDD)
+│       │   ├── auth/               # 인증 도메인
+│       │   ├── feed/               # 피드 도메인
+│       │   ├── message/            # 메시지 도메인
+│       │   ├── notification/       # 알림 도메인
+│       │   ├── post/               # 게시물 도메인
+│       │   └── user/               # 사용자 도메인
+│       ├── db/                     # 데이터베이스
+│       │   ├── migrations/         # DB 마이그레이션
+│       │   ├── schema/             # 스키마 정의 (Drizzle)
+│       │   └── dal/                # 데이터 액세스 레이어
+│       │       ├── abstract/       # 추상 레이어 (DB 교체 가능)
+│       │       ├── firebase/       # Firebase 구현
+│       │       └── postgres/       # PostgreSQL 구현 (선택사항)
+│       ├── middlewares/            # 미들웨어
+│       │   ├── auth.middleware.ts  # 인증 미들웨어
+│       │   ├── error.middleware.ts # 에러 핸들링
+│       │   ├── logger.middleware.ts # 로깅
+│       │   └── validation.middleware.ts # 유효성 검사
+│       ├── services/               # 비즈니스 로직
+│       │   ├── auth.service.ts
+│       │   ├── feed.service.ts
+│       │   ├── messaging.service.ts
+│       │   ├── notification.service.ts
+│       │   └── user.service.ts
+│       ├── types/                  # 타입 정의
+│       ├── utils/                  # 유틸리티 함수
+│       │   ├── logger.ts           # 로깅 유틸
+│       │   └── validators.ts       # 유효성 검사 유틸
+│       ├── app.ts                  # Express 앱 설정
+│       └── index.ts                # 서버 진입점
+├── shared/                         # 클라이언트/서버 공유 코드
+│   ├── constants/                  # 공유 상수
+│   ├── types/                      # 공유 타입
+│   │   ├── auth.types.ts
+│   │   ├── post.types.ts
+│   │   └── user.types.ts
+│   └── utils/                      # 공유 유틸리티
+│       ├── date.ts
+│       └── validation.ts
+├── LICENSE                         # 라이센스 파일
+├── README.md                       # 프로젝트 설명
+├── docker-compose.yml              # Docker Compose 설정
+└── package.json                    # 루트 패키지 설정
+
+위 프로젝트 구조 잘지켜서 만들어줘
