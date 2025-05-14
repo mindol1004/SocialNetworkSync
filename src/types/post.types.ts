@@ -1,5 +1,3 @@
-import { User } from './auth.types';
-
 export interface Post {
   id: string;
   content: string;
