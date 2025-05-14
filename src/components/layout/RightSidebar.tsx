@@ -1,10 +1,12 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { getDatabase, ref, get } from 'firebase/database'
-import { followUser, getCurrentUser } from '@/lib/firebase'
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/lib/i18n";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getDatabase, ref, get } from "firebase/database";
+import { followUser } from "@/lib/firebase";
+import { useToast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/store/authStore";
 
 interface TrendingTopic {
   name: string;
@@ -21,157 +23,178 @@ interface SuggestedUser {
 }
 
 export default function RightSidebar() {
-  const router = useRouter()
-  const [trendingTopics, setTrendingTopics] = useState<TrendingTopic[]>([])
-  const [suggestedUsers, setSuggestedUsers] = useState<SuggestedUser[]>([])
-  const [loading, setLoading] = useState(true)
+  const [_, setLocation] = useLocation();
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const { user } = useAuthStore();
   
+  const [trendingTopics, setTrendingTopics] = useState<TrendingTopic[]>([]);
+  const [suggestedUsers, setSuggestedUsers] = useState<SuggestedUser[]>([]);
+  const [followingStates, setFollowingStates] = useState<Record<string, boolean>>({});
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const currentUser = getCurrentUser()
-        if (!currentUser) return
-        
-        const db = getDatabase()
-        
-        // Fetch trending topics
-        const topicsRef = ref(db, 'trending_topics')
-        const topicsSnapshot = await get(topicsRef)
-        
-        if (topicsSnapshot.exists()) {
-          setTrendingTopics(Object.values(topicsSnapshot.val()))
-        } else {
-          // Mock data if no trending topics
-          setTrendingTopics([
-            { name: 'MacbookPro', category: 'Technology', postCount: 2543 },
-            { name: 'WWDC23', category: 'Technology', postCount: 1832 },
-            { name: 'SwiftUI', category: 'Programming', postCount: 1253 },
-            { name: 'minimalism', category: 'Lifestyle', postCount: 983 },
-            { name: 'appleEvent', category: 'Technology', postCount: 872 },
-          ])
-        }
-        
-        // Fetch suggested users
-        const usersRef = ref(db, 'users')
-        const usersSnapshot = await get(usersRef)
-        
-        if (usersSnapshot.exists()) {
-          const users = Object.values(usersSnapshot.val()) as any[]
-          // Filter out current user
-          const filteredUsers = users.filter(user => user.uid !== currentUser.uid)
-          // Get 5 random users
-          const randomUsers = filteredUsers
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 5)
-          
-          setSuggestedUsers(randomUsers)
-        }
-        
-        setLoading(false)
-      } catch (error) {
-        console.error('Error fetching data for right sidebar:', error)
-        setLoading(false)
+    // Mock trending topics - in a real app, this would come from backend
+    setTrendingTopics([
+      {
+        name: "#MinimalistDesign",
+        category: "Design",
+        postCount: 2400
+      },
+      {
+        name: "#AppleEvent",
+        category: "Technology",
+        postCount: 18700
+      },
+      {
+        name: "#WorkFromAnywhere",
+        category: "Lifestyle",
+        postCount: 5200
       }
+    ]);
+
+    // Fetch suggested users
+    const fetchSuggestedUsers = async () => {
+      if (!user) return;
+      
+      try {
+        const database = getDatabase();
+        const usersRef = ref(database, 'users');
+        const snapshot = await get(usersRef);
+        
+        if (snapshot.exists()) {
+          const usersData = snapshot.val();
+          const suggestedUsersArray: SuggestedUser[] = [];
+          
+          // Random professions for demo
+          const professions = [
+            "UX Designer", "Web Developer", "Photographer",
+            "Product Manager", "Content Creator"
+          ];
+          
+          for (const uid in usersData) {
+            // Skip current user
+            if (uid === user.uid) continue;
+            
+            const userData = usersData[uid];
+            suggestedUsersArray.push({
+              uid,
+              displayName: userData.displayName,
+              username: userData.username,
+              photoURL: userData.photoURL,
+              profession: professions[Math.floor(Math.random() * professions.length)]
+            });
+            
+            // Just get 3 users
+            if (suggestedUsersArray.length >= 3) break;
+          }
+          
+          setSuggestedUsers(suggestedUsersArray);
+        }
+      } catch (error) {
+        console.error("Error fetching suggested users:", error);
+      }
+    };
+    
+    fetchSuggestedUsers();
+  }, [user]);
+
+  const handleFollow = async (userId: string) => {
+    if (!user) {
+      setLocation('/login');
+      return;
     }
     
-    fetchData()
-  }, [])
-  
-  const handleFollow = async (userId: string) => {
     try {
-      const currentUser = getCurrentUser()
-      if (!currentUser?.uid) return
+      await followUser(user.uid, userId);
       
-      await followUser(currentUser.uid, userId)
+      // Update local state
+      setFollowingStates(prev => ({
+        ...prev,
+        [userId]: true
+      }));
       
-      // Update UI
-      setSuggestedUsers(prev => 
-        prev.filter(user => user.uid !== userId)
-      )
-    } catch (error) {
-      console.error('Error following user:', error)
+      toast({
+        title: "Success",
+        description: "You are now following this user"
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to follow user",
+        variant: "destructive"
+      });
     }
-  }
-  
-  if (loading) {
-    return (
-      <div className="p-4">
-        <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
-          <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-4"></div>
-          <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
-        </div>
-      </div>
-    )
-  }
-  
+  };
+
   return (
-    <div className="p-4 space-y-6 overflow-y-auto h-full">
-      {/* Trending topics */}
-      <div>
-        <h3 className="font-bold text-xl mb-4">Trending Topics</h3>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-          {trendingTopics.map((topic, index) => (
-            <div 
-              key={index} 
-              className="py-3 px-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md cursor-pointer"
-              onClick={() => router.push(`/explore?topic=${topic.name}`)}
-            >
-              <div className="text-sm text-gray-500 dark:text-gray-400">{topic.category}</div>
-              <div className="font-semibold">#{topic.name}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">{topic.postCount.toLocaleString()} posts</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Who to follow */}
-      <div>
-        <h3 className="font-bold text-xl mb-4">Who to follow</h3>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-          {suggestedUsers.length === 0 ? (
-            <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-              No suggestions available right now
-            </div>
-          ) : (
-            suggestedUsers.map((user) => (
-              <div key={user.uid} className="p-4 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                <div className="flex items-center justify-between">
-                  <Link href={`/profile/${user.username}`} className="flex items-center">
-                    <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                      {user.photoURL ? (
-                        <img 
-                          src={user.photoURL} 
-                          alt={user.displayName} 
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-blue-500 text-white font-bold">
-                          {user.displayName.charAt(0)}
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <div className="font-semibold">{user.displayName}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">@{user.username}</div>
-                      {user.profession && (
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user.profession}</div>
-                      )}
-                    </div>
-                  </Link>
-                  <button
-                    onClick={() => handleFollow(user.uid)}
-                    className="ml-2 px-3 py-1 text-sm font-medium bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
-                  >
-                    Follow
-                  </button>
-                </div>
+    <div className="hidden lg:block w-80 border-l border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-y-auto">
+      <div className="p-4">
+        <div className="mb-6">
+          <h3 className="font-semibold text-lg mb-4">{t('trendingTopics')}</h3>
+          <div className="space-y-3">
+            {trendingTopics.map((topic, index) => (
+              <div 
+                key={index} 
+                className="cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 p-2 rounded-lg transition"
+                onClick={() => setLocation(`/explore?topic=${encodeURIComponent(topic.name)}`)}
+              >
+                <p className="text-xs text-neutral-500">{topic.category}</p>
+                <p className="font-medium">{topic.name}</p>
+                <p className="text-xs text-neutral-500">{topic.postCount.toLocaleString()} posts</p>
               </div>
-            ))
-          )}
+            ))}
+          </div>
+        </div>
+        
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-lg">{t('suggestedConnections')}</h3>
+            <a 
+              href="#" 
+              className="text-primary text-sm"
+              onClick={(e) => {
+                e.preventDefault();
+                setLocation('/explore?tab=people');
+              }}
+            >
+              {t('seeAll')}
+            </a>
+          </div>
+          
+          <div className="space-y-4">
+            {suggestedUsers.map((suggestedUser) => (
+              <div key={suggestedUser.uid} className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Avatar className="h-10 w-10 mr-3">
+                    <AvatarImage src={suggestedUser.photoURL} alt={suggestedUser.displayName} />
+                    <AvatarFallback>{suggestedUser.displayName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p 
+                      className="font-medium cursor-pointer hover:text-primary"
+                      onClick={() => setLocation(`/profile/${suggestedUser.username}`)}
+                    >
+                      {suggestedUser.displayName}
+                    </p>
+                    <p className="text-xs text-neutral-500">{suggestedUser.profession}</p>
+                  </div>
+                </div>
+                <Button 
+                  className={`
+                    rounded-full px-3 py-1 text-xs transition
+                    ${followingStates[suggestedUser.uid] 
+                      ? 'bg-primary text-white' 
+                      : 'text-primary border border-primary hover:bg-primary hover:text-white'}
+                  `}
+                  onClick={() => handleFollow(suggestedUser.uid)}
+                >
+                  {followingStates[suggestedUser.uid] ? t('following') : t('follow')}
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

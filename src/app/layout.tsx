@@ -1,12 +1,12 @@
-import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MiniMeet - Minimalist Social Network',
-  description: 'A clean, minimalist social networking platform',
+  title: 'MiniMeet - Social Network',
+  description: 'A minimalist social networking platform with clean UX',
 }
 
 export default function RootLayout({
@@ -15,9 +15,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ko" suppressHydrationWarning>
       <body className={inter.className}>
-        {children}
+        <div className="min-h-screen bg-background">
+          {children}
+        </div>
       </body>
     </html>
   )

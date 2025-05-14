@@ -1,23 +1,36 @@
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <h1 className="text-4xl font-bold mb-6">Welcome to MiniMeet</h1>
-        <p className="text-xl mb-6">An Apple-inspired minimalist social network with clean UX</p>
-        <div className="flex gap-4">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 md:p-24">
+      <div className="z-10 max-w-5xl w-full items-center justify-center flex flex-col">
+        <h1 className="text-4xl font-bold text-center mb-6">Welcome to MiniMeet</h1>
+        <p className="text-xl text-center text-gray-600 dark:text-gray-300 mb-10">
+          A minimalist social networking platform with clean UX
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xs justify-center">
           <Link 
             href="/login" 
-            className="px-6 py-3 rounded-md bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors"
+            className="w-full"
           >
-            Login
+            <Button 
+              className="w-full"
+              variant="default"
+            >
+              Log in
+            </Button>
           </Link>
           <Link 
             href="/register" 
-            className="px-6 py-3 rounded-md bg-gray-200 text-gray-800 font-medium hover:bg-gray-300 transition-colors"
+            className="w-full"
           >
-            Register
+            <Button
+              className="w-full"
+              variant="outline"
+            >
+              Sign up
+            </Button>
           </Link>
         </div>
       </div>
