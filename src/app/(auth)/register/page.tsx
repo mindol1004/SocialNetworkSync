@@ -22,6 +22,7 @@ import { registerWithEmail, loginWithGoogle } from '@/lib/firebase'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { t } = useTranslation()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -93,9 +94,9 @@ export default function RegisterPage() {
 
       <Card className="shadow-lg border-primary/10">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
+          <CardTitle className="text-2xl font-bold">{t('createAccount')}</CardTitle>
           <CardDescription>
-            Join MiniMeet to connect with friends and share moments
+            {t('joinToConnect')}
           </CardDescription>
         </CardHeader>
 

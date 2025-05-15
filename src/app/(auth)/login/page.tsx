@@ -22,6 +22,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -72,9 +73,9 @@ export default function LoginPage() {
       
       <Card className="shadow-lg border-primary/10">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+          <CardTitle className="text-2xl font-bold">{t('welcomeBack')}</CardTitle>
           <CardDescription>
-            Sign in to your MiniMeet account
+            {t('signInToAccount')}
           </CardDescription>
         </CardHeader>
         

@@ -20,6 +20,7 @@ import {
 import { getPosts } from '@/lib/firebase'
 
 export default function ExplorePage() {
+  const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = useState('')
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts'],
