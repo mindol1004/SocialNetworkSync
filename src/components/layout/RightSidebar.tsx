@@ -171,12 +171,12 @@ export default function RightSidebar() {
                     <AvatarFallback>{suggestedUser.displayName.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p 
+                    <Link 
+                      href={`/profile/${suggestedUser.username}`}
                       className="font-medium cursor-pointer hover:text-primary"
-                      onClick={() => setLocation(`/profile/${suggestedUser.username}`)}
                     >
                       {suggestedUser.displayName}
-                    </p>
+                    </Link>
                     <p className="text-xs text-neutral-500">{suggestedUser.profession}</p>
                   </div>
                 </div>
