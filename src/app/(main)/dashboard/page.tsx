@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
@@ -7,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getPosts } from '@/lib/firebase'
 
 export default function DashboardPage() {
-  // TanStack Query를 사용한 데이터 가져오기
   const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
     queryFn: getPosts
@@ -16,75 +16,79 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Home</h1>
-        <Button>
+        <h1 className="text-2xl font-bold">홈</h1>
+        <Button variant="outline">
           <PlusCircle className="h-4 w-4 mr-2" />
-          New Post
+          새 게시물
         </Button>
       </div>
 
-      {/* 게시물 작성 카드 */}
       <Card>
         <CardContent className="pt-4">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-              <span className="font-semibold text-sm">ME</span>
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="font-semibold text-sm text-primary">ME</span>
             </div>
             <div className="flex-1">
               <div className="bg-muted rounded-full px-4 py-2 text-muted-foreground cursor-pointer hover:bg-muted/80 transition">
-                What's on your mind?
+                무슨 생각을 하고 계신가요?
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* 게시물 리스트 */}
       <div className="space-y-4">
         {isLoading ? (
           <div className="flex justify-center p-8">
-            <Loader className="h-8 w-8 animate-spin text-muted-foreground" />
+            <Loader className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
           <Card>
             <CardContent className="p-6 text-center text-destructive">
-              <p>Error loading posts. Please try again later.</p>
+              <p>게시물을 불러오는데 실패했습니다. 나중에 다시 시도해주세요.</p>
             </CardContent>
           </Card>
         ) : posts && posts.length > 0 ? (
           posts.map((post: any) => (
-            <Card key={post.id} className="overflow-hidden">
-              <CardHeader className="p-4 pb-0">
+            <Card key={post.id}>
+              <CardHeader className="p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                    <span className="font-semibold text-sm">{post.userId?.substring(0, 2) || 'UN'}</span>
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="font-semibold text-sm text-primary">
+                      {post.userId?.substring(0, 2) || 'UN'}
+                    </span>
                   </div>
                   <div>
-                    <CardTitle className="text-sm font-medium">User ID: {post.userId}</CardTitle>
-                    <p className="text-xs text-muted-foreground">{new Date(post.createdAt).toLocaleString()}</p>
+                    <CardTitle className="text-sm font-medium">
+                      {post.userId}
+                    </CardTitle>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(post.createdAt).toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-4">
+              <CardContent className="p-4 pt-0">
                 <p className="whitespace-pre-wrap">{post.content}</p>
                 {post.imageUrl && (
-                  <div className="mt-3 rounded-md overflow-hidden">
-                    <img 
-                      src={post.imageUrl} 
-                      alt="Post image" 
+                  <div className="mt-3 rounded-lg overflow-hidden">
+                    <img
+                      src={post.imageUrl}
+                      alt="게시물 이미지"
                       className="w-full h-auto object-cover"
                     />
                   </div>
                 )}
                 <div className="flex items-center gap-4 mt-4 pt-3 border-t">
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">
-                    Like ({Object.keys(post.likes || {}).length})
+                  <Button variant="ghost" size="sm">
+                    좋아요 ({Object.keys(post.likes || {}).length})
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">
-                    Comment ({Object.keys(post.comments || {}).length})
+                  <Button variant="ghost" size="sm">
+                    댓글 ({Object.keys(post.comments || {}).length})
                   </Button>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">
-                    Share
+                  <Button variant="ghost" size="sm">
+                    공유하기
                   </Button>
                 </div>
               </CardContent>
@@ -92,8 +96,8 @@ export default function DashboardPage() {
           ))
         ) : (
           <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-muted-foreground">No posts yet. Be the first to post!</p>
+            <CardContent className="p-6 text-center text-muted-foreground">
+              <p>아직 게시물이 없습니다. 첫 번째 게시물을 작성해보세요!</p>
             </CardContent>
           </Card>
         )}

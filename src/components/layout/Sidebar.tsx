@@ -1,3 +1,4 @@
+
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation';
@@ -17,13 +18,13 @@ export default function Sidebar() {
   const { toast } = useToast();
 
   const navItems = [
-    { path: "/", icon: <Home size={20} />, label: t('home') },
-    { path: "/explore", icon: <Search size={20} />, label: t('explore') },
-    { path: "/notifications", icon: <Bell size={20} />, label: t('notifications') },
-    { path: "/messages", icon: <Mail size={20} />, label: t('messages') },
-    { path: "/bookmarks", icon: <Bookmark size={20} />, label: t('bookmarks') },
-    { path: user ? `/profile/${user.email?.split('@')[0]}` : "/login", icon: <User size={20} />, label: t('profile') },
-    { path: "/settings", icon: <Settings size={20} />, label: t('settings') }
+    { path: "/dashboard", icon: <Home className="w-5 h-5" />, label: t('home') },
+    { path: "/explore", icon: <Search className="w-5 h-5" />, label: t('explore') },
+    { path: "/notifications", icon: <Bell className="w-5 h-5" />, label: t('notifications') },
+    { path: "/messages", icon: <Mail className="w-5 h-5" />, label: t('messages') },
+    { path: "/bookmarks", icon: <Bookmark className="w-5 h-5" />, label: t('bookmarks') },
+    { path: user ? `/profile/${user.email?.split('@')[0]}` : "/login", icon: <User className="w-5 h-5" />, label: t('profile') },
+    { path: "/settings", icon: <Settings className="w-5 h-5" />, label: t('settings') }
   ];
 
   const handleLogout = async () => {
@@ -31,14 +32,14 @@ export default function Sidebar() {
       await logoutUser();
       clearUser();
       toast({
-        title: "Logged out successfully",
-        description: "You have been logged out from your account"
+        title: "로그아웃 성공",
+        description: "계정에서 로그아웃되었습니다"
       });
       router.push('/login');
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to log out";
+      const errorMessage = error instanceof Error ? error.message : "로그아웃 실패";
       toast({
-        title: "Error",
+        title: "오류",
         description: errorMessage,
         variant: "destructive"
       });
@@ -46,46 +47,46 @@ export default function Sidebar() {
   };
 
   const handleNewPost = () => {
-    // Scroll to top where the create post component is
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="hidden md:flex flex-col w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-y-auto">
-      <div className="p-4">
+    <div className="hidden md:flex flex-col w-64 min-h-[calc(100vh-4rem)] bg-white dark:bg-neutral-900 border-r border-neutral-200 dark:border-neutral-800">
+      <div className="flex flex-col flex-1 p-4">
         <nav className="space-y-2">
           {navItems.map((item) => (
-            <Link 
+            <Link
               key={item.path}
               href={item.path}
-              className={`flex items-center px-4 py-3 ${
-                pathname === item.path 
-                  ? 'text-primary dark:text-primary bg-blue-50 dark:bg-opacity-10' 
-                  : 'text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
-              } rounded-xl transition`}
+              className={`flex items-center px-4 py-3 rounded-xl transition ${
+                pathname === item.path
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+              }`}
             >
-              <span className="mr-3">{item.icon}</span>
-              <span className="font-medium">{item.label}</span>
+              {item.icon}
+              <span className="ml-3 font-medium">{item.label}</span>
             </Link>
           ))}
 
           {user && (
-            <button 
+            <button
               onClick={handleLogout}
-              className="flex w-full items-center px-4 py-3 text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
+              className="flex w-full items-center px-4 py-3 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
             >
-              <span className="mr-3"><LogOut size={20} /></span>
-              <span className="font-medium">{t('logout')}</span>
+              <LogOut className="w-5 h-5" />
+              <span className="ml-3 font-medium">{t('logout')}</span>
             </button>
           )}
         </nav>
       </div>
       
-      <div className="mt-auto p-4">
-        <Button 
-          className="w-full bg-primary hover:bg-blue-600 text-white font-medium py-2.5 px-4 rounded-full transition"
+      <div className="p-4">
+        <Button
+          className="w-full bg-primary hover:bg-primary/90 text-white"
           onClick={handleNewPost}
         >
+          <PenSquare className="w-5 h-5 mr-2" />
           {t('newPost')}
         </Button>
       </div>

@@ -1,3 +1,4 @@
+
 'use client'
 
 import { ReactNode } from "react";
@@ -12,17 +13,17 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
-      
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex">
         <Sidebar />
-        <main className="flex-1 flex overflow-hidden bg-[#F5F5F7] dark:bg-[#121212]">
-          {children}
-          <RightSidebar />
+        <main className="flex-1 min-h-[calc(100vh-4rem)] p-4 bg-[#F5F5F7] dark:bg-[#121212]">
+          <div className="max-w-4xl mx-auto">
+            {children}
+          </div>
         </main>
+        <RightSidebar />
       </div>
-      
       <MobileNavigation />
     </div>
   );
