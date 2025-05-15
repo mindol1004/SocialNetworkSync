@@ -1,0 +1,63 @@
+Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RedirectBoundary>
+      <RedirectErrorBoundary router={{...}}>
+        <InnerLayoutRouter url="/dashboard" tree={[...]} cacheNode={{lazyData:null, ...}} segmentPath={[...]}>
+          <ClientSegmentRoot Component={function Layout} slots={{...}} params={{}}>
+            <Layout params={Promise}>
+              <MainLayout>
+                <div className="flex flex-...">
+                  <Header>
+                    <header className="sticky top...">
+                      <div className="container ...">
+                        <div className="flex items...">
+                          <div>
+                          <div className="hidden md:...">
+                            <form onSubmit={function handleSearch} className="relative">
+                              <_c type="text" placeholder="검색..." value="" onChange={function onChange} ...>
+                                <input
+                                  type="text"
+                                  className="flex h-10 border border-input px-3 ring-offset-background file:border-0 f..."
+                                  ref={null}
++                                 placeholder="검색..."
+-                                 placeholder="Search..."
+                                  value=""
+                                  onChange={function onChange}
+                                >
+                              ...
+                          <div className="flex items...">
+                            <div>
+                            <div className="flex items...">
+                              <span className="text-sm text-neutral-800 dark:text-white hidden md:inline">
++                               테마
+-                               Theme
+                              ...
+                  ...
+
+    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4433:11)
+    at prepareToHydrateHostInstance (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:4531:21)
+    at completeWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:11351:15)
+    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:845:30)
+    at completeUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15394:19)
+    at performUnitOfWork (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15275:11)
+    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15252:9)
+    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:15227:15)
+    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:14525:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:16350:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)
+    at span (<anonymous>)
+    at Header (webpack-internal:///(app-pages-browser)/./src/components/layout/Header.tsx:227:112)
+    at MainLayout (webpack-internal:///(app-pages-browser)/./src/components/layout/MainLayout.tsx:20:88)
+    at Layout (webpack-internal:///(app-pages-browser)/./src/app/(main)/layout.tsx:11:87)
+    at ClientSegmentRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/client-segment.js:18:50)

@@ -129,7 +129,7 @@ export function useTranslation() {
   // Get browser language or default to 'en'
   const getBrowserLanguage = (): SupportedLanguage => {
     if (typeof window === 'undefined') {
-      return 'en'; // 서버 사이드에서는 기본값 반환
+      return 'ko'; // 서버 사이드에서는 한국어 기본값 반환
     }
     
     try {
@@ -141,13 +141,19 @@ export function useTranslation() {
       const browserLang = navigator.language.split('-')[0];
       return SUPPORTED_LANGUAGES.includes(browserLang) 
         ? browserLang as SupportedLanguage 
-        : 'en';
+        : 'ko';
     } catch (error) {
-      return 'en'; // localStorage 접근 실패 시 기본값 반환
+      return 'ko'; // localStorage 접근 실패 시 한국어 기본값 반환
     }
   };
   
-  const [language, setLanguage] = useState<SupportedLanguage>(getBrowserLanguage());
+  // Always initialize with 'ko' on server, then update on client
+  const [language, setLanguage] = useState<SupportedLanguage>('ko');
+  
+  // Update language after component mounts
+  useEffect(() => {
+    setLanguage(getBrowserLanguage());
+  }, []);
   
   const t = (key: string): string => {
     return translations[language][key] || key;
