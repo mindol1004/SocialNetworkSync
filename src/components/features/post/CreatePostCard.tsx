@@ -6,6 +6,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
 import { createPost } from "@/lib/firebase";
 import { User } from "firebase/auth";
+import { DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 interface CreatePostCardProps {
   user: User | null;
@@ -15,12 +16,12 @@ interface CreatePostCardProps {
 export default function CreatePostCard({ user, onPostCreated }: CreatePostCardProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
-  
+
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showImageInput, setShowImageInput] = useState(false);
-  
+
   if (!user) return null;
 
   const handleContentChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,15 +50,15 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
 
     try {
       const postId = await createPost(user.uid, content, imageUrl);
-      
+
       // Clear form
       setContent("");
       setImageUrl("");
       setShowImageInput(false);
-      
+
       // Notify parent
       onPostCreated(postId);
-      
+
       toast({
         title: "Success",
         description: "Your post has been created"
@@ -74,8 +75,15 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
   };
 
   return (
+    
     <div className="bg-white dark:bg-neutral-900 rounded-xl shadow mb-6 animate-fade-in">
-      <div className="p-4">
+      
+      <DialogContent>
+        <DialogTitle className="text-lg font-semibold mb-4">
+          Create New Post
+        </DialogTitle>
+        <div className="space-y-4 p-4">
+        <div className="p-4">
         <div className="flex items-center">
           <Avatar className="w-10 h-10 mr-3">
             <AvatarImage src={user.photoURL || ""} alt="User avatar" />
@@ -89,7 +97,7 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
             className="bg-neutral-100 dark:bg-neutral-800 border-none rounded-full py-2.5 px-4 flex-1 text-sm focus:outline-none"
           />
         </div>
-        
+
         {showImageInput && (
           <div className="mt-3">
             <Input 
@@ -101,7 +109,7 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
             />
           </div>
         )}
-        
+
         <div className="flex justify-between mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800">
           <div className="flex">
             <button 
@@ -120,7 +128,7 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
               <span className="text-sm">{t('location')}</span>
             </button>
           </div>
-          
+
           <Button 
             className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-1 text-sm"
             onClick={handleSubmit}
@@ -135,6 +143,10 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
           </Button>
         </div>
       </div>
+        </div>
+      </DialogContent>
+      
     </div>
+    
   );
 }

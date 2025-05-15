@@ -9,6 +9,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useTheme } from "@/hooks/useAuth";
 import { Menu, Bell, Search } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { DialogTitle } from "@/components/ui/dialog";
 import Sidebar from './Sidebar';
 
 export default function Header() {
