@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +12,8 @@ import { useTheme } from "@/hooks/useAuth";
 import { useTranslation } from "@/lib/i18n";
 
 export default function Header() {
-  const [_, setLocation] = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const { user } = useAuthStore();
   const { theme, setTheme } = useTheme();
   const { t } = useTranslation();
@@ -18,7 +22,7 @@ export default function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      setLocation(`/explore?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/explore?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
@@ -27,7 +31,7 @@ export default function Header() {
   };
   
   const navigateTo = (path: string) => {
-    setLocation(path);
+    router.push(path);
   };
 
   return (
@@ -35,9 +39,9 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <a href="/" className="text-primary dark:text-white font-semibold text-xl">
+            <Link href="/" className="text-primary dark:text-white font-semibold text-xl">
               MiniMeet
-            </a>
+            </Link>
           </div>
           
           <div className="hidden md:block">
