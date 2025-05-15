@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
 import { useTheme } from "@/hooks/useAuth";
-import { Menu, Bell, Search } from 'lucide-react';
+import { Menu, Bell, Search, Home, Compass, MessageSquare, LogOut, PenSquare } from 'lucide-react';
+
+const navItems = [
+  { path: '/dashboard', icon: <Home className="w-5 h-5" />, label: 'home' },
+  { path: '/explore', icon: <Compass className="w-5 h-5" />, label: 'explore' },
+  { path: '/messages', icon: <MessageSquare className="w-5 h-5" />, label: 'messages' },
+];
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DialogTitle } from "@/components/ui/dialog";
 import Sidebar from './Sidebar';
