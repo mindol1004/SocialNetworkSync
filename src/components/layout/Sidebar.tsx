@@ -7,6 +7,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
 import { logoutUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
+import { Home, Search, Bell, Mail, Bookmark, User, Settings, LogOut, PenSquare } from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -16,13 +17,13 @@ export default function Sidebar() {
   const { toast } = useToast();
 
   const navItems = [
-    { path: "/", icon: "home", label: t('home') },
-    { path: "/explore", icon: "explore", label: t('explore') },
-    { path: "/notifications", icon: "notifications", label: t('notifications') },
-    { path: "/messages", icon: "mail", label: t('messages') },
-    { path: "/bookmarks", icon: "bookmark", label: t('bookmarks') },
-    { path: user ? `/profile/${user.email?.split('@')[0]}` : "/login", icon: "person", label: t('profile') },
-    { path: "/settings", icon: "settings", label: t('settings') }
+    { path: "/", icon: <Home size={20} />, label: t('home') },
+    { path: "/explore", icon: <Search size={20} />, label: t('explore') },
+    { path: "/notifications", icon: <Bell size={20} />, label: t('notifications') },
+    { path: "/messages", icon: <Mail size={20} />, label: t('messages') },
+    { path: "/bookmarks", icon: <Bookmark size={20} />, label: t('bookmarks') },
+    { path: user ? `/profile/${user.email?.split('@')[0]}` : "/login", icon: <User size={20} />, label: t('profile') },
+    { path: "/settings", icon: <Settings size={20} />, label: t('settings') }
   ];
 
   const handleLogout = async () => {
@@ -73,7 +74,7 @@ export default function Sidebar() {
               onClick={handleLogout}
               className="flex w-full items-center px-4 py-3 text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
             >
-              <span className="mr-3">logout</span>
+              <span className="mr-3"><LogOut size={20} /></span>
               <span className="font-medium">{t('logout')}</span>
             </button>
           )}

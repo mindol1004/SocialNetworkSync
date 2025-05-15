@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { useAuthStore } from "@/store/authStore";
 import { useTheme } from "@/hooks/useAuth";
 import { useTranslation } from "@/lib/i18n";
+import { Search, Bell, Mail } from 'lucide-react';
 
 export default function Header() {
   const router = useRouter();
@@ -54,7 +55,7 @@ export default function Header() {
                 className="bg-neutral-100 dark:bg-neutral-800 border-none rounded-full py-2 pl-10 pr-4 w-64 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <span className="absolute left-3 top-2 text-gray-400">
-                Search
+                <Search size={16} />
               </span>
             </form>
           </div>
@@ -66,7 +67,7 @@ export default function Header() {
                   className="relative text-neutral-800 dark:text-white"
                   onClick={() => navigateTo('/notifications')}
                 >
-                  <span className="material-icons">notifications</span>
+                  <Bell size={20} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">3</span>
                 </button>
                 
@@ -74,7 +75,7 @@ export default function Header() {
                   className="relative text-neutral-800 dark:text-white"
                   onClick={() => navigateTo('/messages')}
                 >
-                  <span className="material-icons">mail</span>
+                  <Mail size={20} />
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">2</span>
                 </button>
               </>
