@@ -22,7 +22,12 @@ export function useTheme() {
     return 'light';
   };
   
-  const [theme, setThemeState] = useState<'light' | 'dark' | 'system'>(getInitialTheme);
+  const [theme, setThemeState] = useState<'light' | 'dark' | 'system'>('light');
+  
+  // Initialize the state with the correct value after mount
+  useEffect(() => {
+    setThemeState(getInitialTheme());
+  }, []);
   
   const setTheme = (newTheme: 'light' | 'dark' | 'system') => {
     setThemeState(newTheme);
