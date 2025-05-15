@@ -32,8 +32,8 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1">
               <div className="bg-muted rounded-full px-4 py-2 text-muted-foreground cursor-pointer hover:bg-muted/80 transition">
-                무슨 생각을 하고 계신가요?
-              </div>
+              {t('whatsOnYourMind')}
+            </div>
             </div>
           </div>
         </CardContent>
