@@ -4,6 +4,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
+import { Home, Search, Plus, Bell, User } from 'lucide-react';
 
 export default function MobileNavigation() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function MobileNavigation() {
           href="/"
           className={`flex flex-col items-center justify-center ${pathname === '/' ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
         >
-          <span className="text-[22px]">home</span>
+          <span>홈</span>
           <span className="text-xs mt-0.5">{t('home')}</span>
         </Link>
         
@@ -31,7 +32,7 @@ export default function MobileNavigation() {
           href="/explore"
           className={`flex flex-col items-center justify-center ${pathname === '/explore' ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
         >
-          <span className="text-[22px]">explore</span>
+          <span>검색</span>
           <span className="text-xs mt-0.5">{t('explore')}</span>
         </Link>
         
