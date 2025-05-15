@@ -1,12 +1,11 @@
+
 'use client'
 
 import { useState, useEffect } from 'react';
 
-// Define supported languages
 export const SUPPORTED_LANGUAGES = ['en', 'ko'];
 export type SupportedLanguage = 'en' | 'ko';
 
-// Translation dictionaries
 const translations: Record<string, Record<string, string>> = {
   en: {
     // Auth
@@ -38,12 +37,21 @@ const translations: Record<string, Record<string, string>> = {
     
     // Post
     'newPost': 'New Post',
+    'createPost': 'Create Post',
     'whatsOnYourMind': 'What\'s on your mind?',
     'photo': 'Photo',
     'video': 'Video',
     'location': 'Location',
     'postComment': 'Add a comment...',
     'send': 'Send',
+    'like': 'Like',
+    'comment': 'Comment',
+    'share': 'Share',
+    'delete': 'Delete',
+    'edit': 'Edit',
+    'save': 'Save',
+    'cancel': 'Cancel',
+    'post': 'Post',
     
     // Profile
     'follow': 'Follow',
@@ -57,13 +65,16 @@ const translations: Record<string, Record<string, string>> = {
     'trendingTopics': 'Trending Topics',
     'suggestedConnections': 'Suggested Connections',
     'seeAll': 'See all',
-    'cancel': 'Cancel',
-    'save': 'Save',
-    'delete': 'Delete',
     'loading': 'Loading...',
     'noResults': 'No results found',
     'error': 'An error occurred',
-    'or': 'or'
+    'success': 'Success',
+    'or': 'or',
+    'noPostsYet': 'No posts yet. Create your first post!',
+    'loadMore': 'Load More',
+    'recentActivity': 'Recent Activity',
+    'whoToFollow': 'Who to Follow',
+    'trending': 'Trending',
   },
   ko: {
     // Auth
@@ -95,12 +106,21 @@ const translations: Record<string, Record<string, string>> = {
     
     // Post
     'newPost': '새 게시물',
+    'createPost': '게시물 작성',
     'whatsOnYourMind': '무슨 생각을 하고 계신가요?',
     'photo': '사진',
     'video': '동영상',
     'location': '위치',
     'postComment': '댓글 추가...',
     'send': '보내기',
+    'like': '좋아요',
+    'comment': '댓글',
+    'share': '공유하기',
+    'delete': '삭제',
+    'edit': '수정',
+    'save': '저장',
+    'cancel': '취소',
+    'post': '게시',
     
     // Profile
     'follow': '팔로우',
@@ -114,22 +134,24 @@ const translations: Record<string, Record<string, string>> = {
     'trendingTopics': '인기 주제',
     'suggestedConnections': '추천 연결',
     'seeAll': '모두 보기',
-    'cancel': '취소',
-    'save': '저장',
-    'delete': '삭제',
     'loading': '로딩 중...',
     'noResults': '결과가 없습니다',
     'error': '오류가 발생했습니다',
-    'or': '또는'
+    'success': '성공',
+    'or': '또는',
+    'noPostsYet': '아직 게시물이 없습니다. 첫 번째 게시물을 작성해보세요!',
+    'loadMore': '더 보기',
+    'recentActivity': '최근 활동',
+    'whoToFollow': '팔로우 추천',
+    'trending': '트렌딩',
   }
 };
 
 // i18n hook
 export function useTranslation() {
-  // Get browser language or default to 'en'
   const getBrowserLanguage = (): SupportedLanguage => {
     if (typeof window === 'undefined') {
-      return 'ko'; // 서버 사이드에서는 한국어 기본값 반환
+      return 'ko';
     }
     
     try {
@@ -143,14 +165,12 @@ export function useTranslation() {
         ? browserLang as SupportedLanguage 
         : 'ko';
     } catch (error) {
-      return 'ko'; // localStorage 접근 실패 시 한국어 기본값 반환
+      return 'ko';
     }
   };
   
-  // Always initialize with 'ko' on server, then update on client
   const [language, setLanguage] = useState<SupportedLanguage>('ko');
   
-  // Update language after component mounts
   useEffect(() => {
     setLanguage(getBrowserLanguage());
   }, []);
