@@ -75,15 +75,14 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
   };
 
   return (
-    
+
     <div className="bg-white dark:bg-neutral-900 rounded-xl shadow mb-6 animate-fade-in">
-      
+
       <DialogContent>
         <DialogTitle className="text-lg font-semibold mb-4">
           Create New Post
         </DialogTitle>
-        <div className="space-y-4 p-4">
-        <div className="p-4">
+        <div className="space-y-4">
         <div className="flex items-center">
           <Avatar className="w-10 h-10 mr-3">
             <AvatarImage src={user.photoURL || ""} alt="User avatar" />
@@ -145,8 +144,8 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
       </div>
         </div>
       </DialogContent>
-      
+
     </div>
-    
+
   );
 }
