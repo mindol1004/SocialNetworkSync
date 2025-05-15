@@ -41,7 +41,46 @@ export default function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64">
-            <Sidebar />
+            <DialogTitle className="sr-only">Sidebar Menu</DialogTitle>
+            <div className="flex flex-col h-full">
+              <div className="flex-1 p-4">
+                <nav className="space-y-2">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      href={item.path}
+                      className={`flex items-center px-4 py-3 rounded-xl transition ${
+                        pathname === item.path
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                      }`}
+                    >
+                      {item.icon}
+                      <span className="ml-3 font-medium">{item.label}</span>
+                    </Link>
+                  ))}
+
+                  {user && (
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center px-4 py-3 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span className="ml-3 font-medium">{t('logout')}</span>
+                    </button>
+                  )}
+                </nav>
+              </div>
+              <div className="p-4">
+                <Button
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={handleNewPost}
+                >
+                  <PenSquare className="w-5 h-5 mr-2" />
+                  {t('newPost')}
+                </Button>
+              </div>
+            </div>
           </SheetContent>
         </Sheet>
 
