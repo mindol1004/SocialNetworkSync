@@ -54,7 +54,7 @@ export default function Header() {
                 className="bg-neutral-100 dark:bg-neutral-800 border-none rounded-full py-2 pl-10 pr-4 w-64 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <span className="absolute left-3 top-2 text-gray-400">
-                <span className="material-icons text-sm">search</span>
+                Search
               </span>
             </form>
           </div>
