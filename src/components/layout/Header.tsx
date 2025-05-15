@@ -16,7 +16,6 @@ const navItems = [
 ];
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DialogTitle } from "@/components/ui/dialog";
-import Sidebar from './Sidebar';
 
 export default function Header() {
   const { t } = useTranslation();

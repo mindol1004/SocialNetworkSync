@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { loginWithEmail, loginWithGoogle } from '@/lib/firebase'
-import { useQuery } from '@tanstack/react-query'
 
 export default function LoginPage() {
   const router = useRouter()
