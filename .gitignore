@@ -5,3 +5,8 @@ server/public
 vite.config.ts.*
 *.tar.gz
 .next
+.turbo
+coverage
+.env*.local
+build
+out
