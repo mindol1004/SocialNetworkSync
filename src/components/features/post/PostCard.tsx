@@ -43,7 +43,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
   const [_, setLocation] = useLocation();
   const { t } = useTranslation();
   const { toast } = useToast();
-  
+
   const [isCommentsVisible, setIsCommentsVisible] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
@@ -62,7 +62,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
     : [];
 
   const formattedDate = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
-  
+
   const isLongContent = post.content.length > 300;
   const displayContent = isLongContent && !showFullContent 
     ? post.content.substring(0, 300) + "..." 
@@ -80,7 +80,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
 
     try {
       const newLikeStatus = await toggleLikePost(post.id, currentUser.uid);
-      
+
       // Update UI
       setLiked(newLikeStatus);
       setLikeCount(prevCount => newLikeStatus ? prevCount + 1 : prevCount - 1);
@@ -111,16 +111,16 @@ export default function PostCard({ post, currentUser }: PostProps) {
 
     try {
       await addComment(post.id, currentUser.uid, newComment);
-      
+
       // Clear input
       setNewComment("");
-      
+
       // Update comment count
       setCommentCount(prevCount => prevCount + 1);
-      
+
       // Make sure comments are visible
       setIsCommentsVisible(true);
-      
+
       // In a real app, we would fetch the updated comments
       // Here we're just showing what the user entered
       toast({
@@ -164,7 +164,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
             <span className="material-icons">more_horiz</span>
           </button>
         </div>
-        
+
         <div className="mt-3">
           <p>
             {displayContent}
@@ -178,7 +178,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
             )}
           </p>
         </div>
-        
+
         {post.imageUrl && (
           <div className="mt-3 rounded-xl overflow-hidden">
             <img 
@@ -188,7 +188,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
             />
           </div>
         )}
-        
+
         <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800">
           <div className="flex">
             <button 
@@ -226,7 +226,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
           </button>
         </div>
       </div>
-      
+
       {isCommentsVisible && (
         <div className="px-4 pb-4 pt-0 border-t border-neutral-100 dark:border-neutral-800">
           <div className="space-y-4 animate-slide-up">
@@ -246,7 +246,7 @@ export default function PostCard({ post, currentUser }: PostProps) {
             ) : (
               <p className="text-center text-neutral-500 py-2">No comments yet</p>
             )}
-            
+
             <div className="flex items-center mt-4">
               <Avatar className="w-8 h-8 mr-3">
                 <AvatarImage 

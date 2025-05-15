@@ -1,12 +1,14 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { useTranslation } from '@/lib/i18n'
 import { PlusCircle, Loader } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getPosts } from '@/lib/firebase'
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
   const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
     queryFn: getPosts
@@ -15,10 +17,10 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">홈</h1>
+        <h1 className="text-2xl font-bold">{t('home')}</h1>
         <Button variant="outline">
           <PlusCircle className="h-4 w-4 mr-2" />
-          새 게시물
+          {t('newPost')}
         </Button>
       </div>
 
@@ -41,11 +43,12 @@ export default function DashboardPage() {
         {isLoading ? (
           <div className="flex justify-center p-8">
             <Loader className="h-8 w-8 animate-spin text-primary" />
+            <p className="mt-2">{t('loading')}</p>
           </div>
         ) : error ? (
           <Card>
             <CardContent className="p-6 text-center text-destructive">
-              <p>게시물을 불러오는데 실패했습니다. 나중에 다시 시도해주세요.</p>
+              <p>{t('error')}</p>
             </CardContent>
           </Card>
         ) : posts && posts.length > 0 ? (
@@ -96,7 +99,7 @@ export default function DashboardPage() {
         ) : (
           <Card>
             <CardContent className="p-6 text-center text-muted-foreground">
-              <p>아직 게시물이 없습니다. 첫 번째 게시물을 작성해보세요!</p>
+              <p>{t('noPostsYet')}</p>
             </CardContent>
           </Card>
         )}
