@@ -1,10 +1,11 @@
+
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
-import { Home, Search, Plus, Bell, User } from 'lucide-react';
+import { Home, Search, PlusCircle, Bell, User } from 'lucide-react';
 
 export default function MobileNavigation() {
   const router = useRouter();
@@ -13,53 +14,45 @@ export default function MobileNavigation() {
   const { user } = useAuthStore();
 
   const handleNewPost = () => {
-    // Scroll to top where the create post component is
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const navItems = [
+    { href: "/dashboard", icon: Home, label: t('home') },
+    { href: "/explore", icon: Search, label: t('explore') },
+    { onClick: handleNewPost, icon: PlusCircle, label: t('newPost') },
+    { href: "/notifications", icon: Bell, label: t('notifications') },
+    { href: user ? `/profile/${user.email?.split('@')[0]}` : "/login", icon: User, label: t('profile') },
+  ];
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-10 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 md:hidden">
       <div className="grid grid-cols-5 h-16">
-        <Link 
-          href="/"
-          className={`flex flex-col items-center justify-center ${pathname === '/' ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
-        >
-          <span>홈</span>
-          <span className="text-xs mt-0.5">{t('home')}</span>
-        </Link>
-        
-        <Link 
-          href="/explore"
-          className={`flex flex-col items-center justify-center ${pathname === '/explore' ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
-        >
-          <span>검색</span>
-          <span className="text-xs mt-0.5">{t('explore')}</span>
-        </Link>
-        
-        <button 
-          onClick={handleNewPost}
-          className="flex flex-col items-center justify-center"
-        >
-          <div className="bg-primary text-white p-2 rounded-full">
-            <span className="text-[22px]">add</span>
-          </div>
-        </button>
-        
-        <Link 
-          href="/notifications"
-          className={`flex flex-col items-center justify-center ${pathname === '/notifications' ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
-        >
-          <span className="text-[22px]">notifications</span>
-          <span className="text-xs mt-0.5">{t('notifications')}</span>
-        </Link>
-        
-        <Link 
-          href={user ? `/profile/${user.email?.split('@')[0]}` : "/login"}
-          className={`flex flex-col items-center justify-center ${pathname.includes('/profile') ? 'text-primary' : 'text-neutral-600 dark:text-neutral-400'}`}
-        >
-          <span className="text-[22px]">person</span>
-          <span className="text-xs mt-0.5">{t('profile')}</span>
-        </Link>
+        {navItems.map((item, index) => (
+          item.onClick ? (
+            <button
+              key={index}
+              onClick={item.onClick}
+              className="flex flex-col items-center justify-center text-neutral-600 dark:text-neutral-400"
+            >
+              <item.icon className="h-6 w-6" />
+              <span className="text-xs mt-1">{item.label}</span>
+            </button>
+          ) : (
+            <Link
+              key={index}
+              href={item.href}
+              className={`flex flex-col items-center justify-center ${
+                pathname === item.href
+                  ? 'text-primary'
+                  : 'text-neutral-600 dark:text-neutral-400'
+              }`}
+            >
+              <item.icon className="h-6 w-6" />
+              <span className="text-xs mt-1">{item.label}</span>
+            </Link>
+          )
+        ))}
       </div>
     </nav>
   );
