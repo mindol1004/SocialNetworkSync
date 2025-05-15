@@ -6,7 +6,7 @@ import { useTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
 import { createPost } from "@/lib/firebase";
 import { User } from "firebase/auth";
-import { DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 interface CreatePostCardProps {
   user: User | null;
@@ -82,6 +82,9 @@ export default function CreatePostCard({ user, onPostCreated }: CreatePostCardPr
         <DialogTitle className="text-lg font-semibold mb-4">
           Create New Post
         </DialogTitle>
+        <DialogDescription className="text-sm text-muted-foreground">
+          Share your thoughts, photos, or updates with your followers
+        </DialogDescription>
         <div className="space-y-4">
         <div className="flex items-center">
           <Avatar className="w-10 h-10 mr-3">
