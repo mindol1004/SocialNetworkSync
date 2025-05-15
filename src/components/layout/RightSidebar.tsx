@@ -1,5 +1,8 @@
+'use client'
+
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,7 +26,8 @@ interface SuggestedUser {
 }
 
 export default function RightSidebar() {
-  const [_, setLocation] = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslation();
   const { toast } = useToast();
   const { user } = useAuthStore();
@@ -100,7 +104,7 @@ export default function RightSidebar() {
 
   const handleFollow = async (userId: string) => {
     if (!user) {
-      setLocation('/login');
+      router.push('/login');
       return;
     }
     
@@ -117,10 +121,11 @@ export default function RightSidebar() {
         title: "Success",
         description: "You are now following this user"
       });
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to follow user";
       toast({
         title: "Error",
-        description: error.message || "Failed to follow user",
+        description: errorMessage,
         variant: "destructive"
       });
     }
@@ -136,7 +141,7 @@ export default function RightSidebar() {
               <div 
                 key={index} 
                 className="cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 p-2 rounded-lg transition"
-                onClick={() => setLocation(`/explore?topic=${encodeURIComponent(topic.name)}`)}
+                onClick={() => router.push(`/explore?topic=${encodeURIComponent(topic.name)}`)}
               >
                 <p className="text-xs text-neutral-500">{topic.category}</p>
                 <p className="font-medium">{topic.name}</p>
@@ -149,16 +154,12 @@ export default function RightSidebar() {
         <div>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-lg">{t('suggestedConnections')}</h3>
-            <a 
-              href="#" 
+            <Link 
+              href="/explore?tab=people" 
               className="text-primary text-sm"
-              onClick={(e) => {
-                e.preventDefault();
-                setLocation('/explore?tab=people');
-              }}
             >
               {t('seeAll')}
-            </a>
+            </Link>
           </div>
           
           <div className="space-y-4">

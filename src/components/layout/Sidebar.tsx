@@ -1,4 +1,7 @@
-import { useLocation } from "wouter";
+'use client'
+
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
@@ -6,7 +9,8 @@ import { logoutUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Sidebar() {
-  const [location, setLocation] = useLocation();
+  const pathname = usePathname();
+  const router = useRouter();
   const { t } = useTranslation();
   const { user, clearUser } = useAuthStore();
   const { toast } = useToast();
@@ -29,11 +33,12 @@ export default function Sidebar() {
         title: "Logged out successfully",
         description: "You have been logged out from your account"
       });
-      setLocation('/login');
-    } catch (error: any) {
+      router.push('/login');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to log out";
       toast({
         title: "Error",
-        description: error.message || "Failed to log out",
+        description: errorMessage,
         variant: "destructive"
       });
     }
@@ -45,40 +50,32 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-y-auto">
+    <div className="hidden md:flex flex-col w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-y-auto">
       <div className="p-4">
         <nav className="space-y-2">
           {navItems.map((item) => (
-            <a 
+            <Link 
               key={item.path}
               href={item.path}
-              onClick={(e) => {
-                e.preventDefault();
-                setLocation(item.path);
-              }}
               className={`flex items-center px-4 py-3 ${
-                location === item.path 
+                pathname === item.path 
                   ? 'text-primary dark:text-primary bg-blue-50 dark:bg-opacity-10' 
                   : 'text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800'
               } rounded-xl transition`}
             >
-              <span className="material-icons mr-3">{item.icon}</span>
+              <span className="mr-3">{item.icon}</span>
               <span className="font-medium">{item.label}</span>
-            </a>
+            </Link>
           ))}
 
           {user && (
-            <a 
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handleLogout();
-              }}
-              className="flex items-center px-4 py-3 text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
+            <button 
+              onClick={handleLogout}
+              className="flex w-full items-center px-4 py-3 text-neutral-800 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition"
             >
-              <span className="material-icons mr-3">logout</span>
+              <span className="mr-3">logout</span>
               <span className="font-medium">{t('logout')}</span>
-            </a>
+            </button>
           )}
         </nav>
       </div>
@@ -91,6 +88,6 @@ export default function Sidebar() {
           {t('newPost')}
         </Button>
       </div>
-    </aside>
+    </div>
   );
 }

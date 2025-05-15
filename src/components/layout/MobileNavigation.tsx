@@ -1,9 +1,13 @@
-import { useLocation } from "wouter";
+'use client'
+
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
 
 export default function MobileNavigation() {
-  const [location, setLocation] = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslation();
   const { user } = useAuthStore();
 

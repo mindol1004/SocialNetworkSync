@@ -128,15 +128,23 @@ const translations: Record<string, Record<string, string>> = {
 export function useTranslation() {
   // Get browser language or default to 'en'
   const getBrowserLanguage = (): SupportedLanguage => {
-    const storedLang = localStorage.getItem('language');
-    if (storedLang && SUPPORTED_LANGUAGES.includes(storedLang)) {
-      return storedLang as SupportedLanguage;
+    if (typeof window === 'undefined') {
+      return 'en'; // 서버 사이드에서는 기본값 반환
     }
     
-    const browserLang = navigator.language.split('-')[0];
-    return SUPPORTED_LANGUAGES.includes(browserLang) 
-      ? browserLang as SupportedLanguage 
-      : 'en';
+    try {
+      const storedLang = localStorage.getItem('language');
+      if (storedLang && SUPPORTED_LANGUAGES.includes(storedLang)) {
+        return storedLang as SupportedLanguage;
+      }
+      
+      const browserLang = navigator.language.split('-')[0];
+      return SUPPORTED_LANGUAGES.includes(browserLang) 
+        ? browserLang as SupportedLanguage 
+        : 'en';
+    } catch (error) {
+      return 'en'; // localStorage 접근 실패 시 기본값 반환
+    }
   };
   
   const [language, setLanguage] = useState<SupportedLanguage>(getBrowserLanguage());
@@ -147,7 +155,13 @@ export function useTranslation() {
   
   const changeLanguage = (lang: SupportedLanguage) => {
     if (SUPPORTED_LANGUAGES.includes(lang)) {
-      localStorage.setItem('language', lang);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('language', lang);
+        } catch (error) {
+          console.error('Failed to save language to localStorage:', error);
+        }
+      }
       setLanguage(lang);
     }
   };
