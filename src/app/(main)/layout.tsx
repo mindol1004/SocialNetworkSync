@@ -1,9 +1,16 @@
+
 'use client'
 
-export default function MainLayout({
+import MainLayout from '@/components/layout/MainLayout'
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return (
+    <MainLayout>
+      {children}
+    </MainLayout>
+  );
 }
