@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from '@/lib/i18n'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Lock, LogIn, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
