@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Authentication - MiniMeet',
+  title: 'MiniMeet - Authentication',
   description: 'Sign in or sign up to MiniMeet',
 }
 
