@@ -13,7 +13,7 @@ export class SignUpUserService {
   async createUser(userData: SignUpDTO): Promise<User> {
     this.userRepository.findByEmail(userData.email).then((user) => {
       if (user) {
-        throw new UserErrors.duplicateEmail(userData.email);
+        throw UserErrors.duplicateEmail(userData.email);
       }
     });
     return await this.userRepository.create(userData);
