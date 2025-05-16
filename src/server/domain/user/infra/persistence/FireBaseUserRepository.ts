@@ -51,8 +51,33 @@ export class FireBaseUserRepository implements UserRepositoryPort {
         return null;
     }
   
-    searchByName(name: string): Promise<User[]> {
-        throw new Error('Method not implemented.');
+    async searchByName(name: string): Promise<User[]> {
+        const usersRef = ref(database, 'users');
+        const userQuery = query(usersRef, orderByChild('username'));
+        const snapshot = await get(userQuery);
+
+        if (snapshot.exists()) {
+            const users = snapshot.val();
+            return Object.values(users)
+                .filter((user: any) => 
+                    user.username.toLowerCase().includes(name.toLowerCase()) ||
+                    (user.displayName && user.displayName.toLowerCase().includes(name.toLowerCase()))
+                )
+                .map((user: any) => ({
+                    id: user.uid,
+                    email: user.email,
+                    username: user.username,
+                    password: '',
+                    role: user.role,
+                    photoURL: user.photoURL,
+                    createdAt: user.createdAt,
+                    updatedAt: user.updatedAt,
+                    followers: user.followers,
+                    following: user.following,
+                }));
+        }
+
+        return [];
     }
   
     async loginWithEmail(email: string, password: string): Promise<User | null> {

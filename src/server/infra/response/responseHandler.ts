@@ -15,7 +15,7 @@ export class ResponseHandler {
     res.status(statusCode).json(response);
   }
 
-  static error(res: NextApiResponse, code: string, message: string, statusCode = 500): void {
+  static error(res: NextApiResponse, code?: string, message?: string, statusCode = 500): void {
     const response: ApiErrorResponse = {
       success: false,
       error: {

@@ -7,8 +7,8 @@ export interface ApiSuccessResponse<T> {
 export interface ApiErrorResponse {
   success: false;
   error: {
-    code: string;
-    message: string;
+    code?: string;
+    message?: string;
   };
 }
 
