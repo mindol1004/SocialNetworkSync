@@ -20,18 +20,21 @@ export class UserController {
     this.findUserService = findUserService;
   }
 
+  // POST /api/auth/signin
   signIn = apiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
     const user = await this.signInUserService.loginWithEmail(email, password);
     ResponseHandler.success(res, user);
   });
 
+  // POST /api/auth/signup
   signUp = apiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
     const userData = req.body;
     const newUser = await this.signUpUserService.createUser(userData);
     ResponseHandler.success(res, newUser, '사용자가 성공적으로 생성되었습니다', 201);    
   });
 
+  // GET /api/users/search
   searchUsers = apiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
       const { query } = req.query;
       if (!query || typeof query !== 'string') {
