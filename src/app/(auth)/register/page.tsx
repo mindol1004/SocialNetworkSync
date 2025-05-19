@@ -19,6 +19,8 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { registerWithEmail, loginWithGoogle } from '@/lib/firebase'
+import { useTranslation } from '@/lib/i18n'
+import { api } from '@/lib/axios';
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -59,7 +61,10 @@ export default function RegisterPage() {
     setLoading(true)
 
     try {
-      await registerWithEmail(email, password, name)
+      // await registerWithEmail(email, password, name)
+
+      await api.post('/api/user/signup', { email, password, name });
+      
       router.push('/dashboard')
     } catch (err: any) {
       console.error('Registration error:', err)
