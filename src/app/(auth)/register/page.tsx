@@ -30,8 +30,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { loginWithGoogle } from "@/lib/firebase";
 import { useTranslation } from "@/lib/i18n";
 import { api } from "@/lib/axios";
-import { SignUpDTO } from "@/shared/domain/user/dto/SignUpDTO";
-import { SignUpSchema } from "@/shared/domain/user/schema/SignUpSchema";
+import { SignUpDTO, SignUpSchema } from "@/shared/domain/user/dto/SignUpDTO";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -50,38 +49,33 @@ export default function RegisterPage() {
     setError("");
     setLoading(true);
 
-    try {
-      if (!agreeTerms) {
-        throw new Error(t('terms.required'));
-      }
+    const result = SignUpSchema.safeParse({
+      email,
+      password,
+      username: name
+    });
 
-      if (password !== confirmPassword) {
-        throw new Error(t('password.notMatch'));
-      }
-
-      const result = SignUpSchema.safeParse({
-        email,
-        password,
-        username: name
-      });
-
-      if (!result.success) {
-        throw new Error(result.error.errors[0]?.message);
-      }
-
-      await api.post("/api/user/signup", {
-        email,
-        password,
-        username: name, // using name as username
-      } as SignUpDTO);
-
-      router.push("/dashboard");
-    } catch (err: any) {
-      console.error("Registration error:", err);
-      setError(err.message || "Failed to create account. Please try again.");
-    } finally {
-      setLoading(false);
+    if (!result.success) {
+      setError(result.error.errors[0]?.message);
     }
+
+    if (!agreeTerms) {
+      setError(t('terms.required'));
+    }
+
+    if (password !== confirmPassword) {
+      setError(t('password.notMatch'));
+    }
+
+    await api.post("/api/user/signup", {
+      email,
+      password,
+      username: name, // using name as username
+    } as SignUpDTO);
+
+    router.push("/dashboard");
+
+    setLoading(false);
   };
 
   const handleGoogleSignup = async () => {
