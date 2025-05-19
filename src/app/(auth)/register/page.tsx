@@ -31,6 +31,7 @@ import { loginWithGoogle } from "@/lib/firebase";
 import { useTranslation } from "@/lib/i18n";
 import { api } from "@/lib/axios";
 import { SignUpDTO } from "@/shared/domain/user/dto/SignUpDTO";
+import { SignUpSchema } from "@/shared/domain/user/schema/SignUpSchema";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -47,25 +48,26 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
-    if (!name || !email || !password || !confirmPassword) {
-      setError("All fields are required");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 6) {
-      setError("Password must be at least 8 characters long");
-      return;
-    }
-
     setLoading(true);
 
     try {
+      if (!agreeTerms) {
+        throw new Error(t('terms.required'));
+      }
+
+      if (password !== confirmPassword) {
+        throw new Error(t('password.notMatch'));
+      }
+
+      const result = SignUpSchema.safeParse({
+        email,
+        password,
+        username: name
+      });
+
+      if (!result.success) {
+        throw new Error(result.error.errors[0]?.message);
+      }
 
       await api.post("/api/user/signup", {
         email,
