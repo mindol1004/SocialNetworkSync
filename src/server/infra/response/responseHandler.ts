@@ -1,8 +1,9 @@
-import { NextApiResponse } from 'next';
+
+import { NextResponse } from 'next/server';
 import { ApiSuccessResponse, ApiErrorResponse } from './ApiResponse';
 
 export class ResponseHandler {
-  static success<T>(res: NextApiResponse, data: T, message?: string, statusCode = 200): void {
+  static success<T>(data: T, message?: string, statusCode = 200): NextResponse {
     const response: ApiSuccessResponse<T> = {
       success: true,
       data,
@@ -12,10 +13,10 @@ export class ResponseHandler {
       response.message = message;
     }
 
-    res.status(statusCode).json(response);
+    return NextResponse.json(response, { status: statusCode });
   }
 
-  static error(res: NextApiResponse, code?: string, message?: string, statusCode = 500): void {
+  static error(code?: string, message?: string, statusCode = 500): NextResponse {
     const response: ApiErrorResponse = {
       success: false,
       error: {
@@ -24,6 +25,6 @@ export class ResponseHandler {
       },
     };
 
-    res.status(statusCode).json(response);
+    return NextResponse.json(response, { status: statusCode });
   }
 }
