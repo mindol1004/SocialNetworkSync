@@ -81,10 +81,8 @@ export const FireBaseUserRepository: UserRepositoryPort = {
   async loginWithEmail(email: string, password: string): Promise<User | null> {
     const result = await signInWithEmailAndPassword(auth, email, password);
     const fireBaseUser = result.user;
-    const usersRef = ref(database, 'users');
-    console.log(fireBaseUser.uid);
-    const userQuery = query(usersRef, equalTo(fireBaseUser.uid));
-    const snapshot = await get(userQuery);
+    const userRef = ref(database, `users/${fireBaseUser.uid}`);
+    const snapshot = await get(userRef);
     console.log('==============================');
     console.log(snapshot);
 
