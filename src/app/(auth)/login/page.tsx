@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 // import { loginWithEmail, loginWithGoogle } from '@/lib/firebase'
+import { api } from '@/lib/axios';
 
 export default function LoginPage() {
   const router = useRouter()
@@ -37,8 +38,9 @@ export default function LoginPage() {
       if (!email || !password) {
         throw new Error('Please enter both email and password')
       }
+
+      await api.post('/api/user/signin', { email, password });
       
-      await loginWithEmail(email, password)
       router.push('/dashboard')
     } catch (err: any) {
       console.error('Login error:', err)
@@ -49,18 +51,18 @@ export default function LoginPage() {
   }
 
   const handleGoogleLogin = async () => {
-    setError('')
-    setLoading(true)
+    // setError('')
+    // setLoading(true)
 
-    try {
-      await loginWithGoogle()
-      router.push('/dashboard')
-    } catch (err: any) {
-      console.error('Google login error:', err)
-      setError(err.message || 'Failed to sign in with Google.')
-    } finally {
-      setLoading(false)
-    }
+    // try {
+    //   await loginWithGoogle()
+    //   router.push('/dashboard')
+    // } catch (err: any) {
+    //   console.error('Google login error:', err)
+    //   setError(err.message || 'Failed to sign in with Google.')
+    // } finally {
+    //   setLoading(false)
+    // }
   }
 
   return (
