@@ -10,31 +10,26 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     throw new Error('Method not implemented.');
   },
 
-  async create(user: User): Promise<User> {
+  async create(user: User): Promise<User> {    
     const result = await createUserWithEmailAndPassword(auth, user.email, user.password);
     const fireBaseUser = result.user;
 
     await updateProfile(fireBaseUser, { displayName: user.username });
 
-    // Add new user data to users table
     await set(ref(database, `users/${fireBaseUser.uid}`), {
       uid: fireBaseUser.uid,
       email: user.email,
+      password: user.password,
       username: user.username,
-      photoURL: fireBaseUser.photoURL || '',
-      followers: {},
-      following: {},
+      photoURL: '',
+      followers: null,
+      following: null,
       role: 'user',
       createdAt: Date.now(),
-      updatedAt: null,
-      displayName: user.username
+      updatedAt: null
     });
-
-    return {
-      ...user,
-      id: fireBaseUser.uid,
-      photoURL: fireBaseUser.photoURL || ''
-    };
+    
+    return user;
   },
 
   async update(user: User): Promise<User> {
