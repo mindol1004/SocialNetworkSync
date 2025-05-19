@@ -2,9 +2,15 @@ import { User } from '../model/User';
 import { z } from 'zod';
 
 export const SignUpSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  username: z.string().min(2),
+  email: z.string({
+    required_error: 'email.required'
+  }).email('email.invalid'),
+  password: z.string({
+    required_error: 'password.required'
+  }).min(6, 'password.minLength'),
+  username: z.string({
+    required_error: 'username.required'
+  }).min(2, 'username.minLength'),
 });
 
 export interface SignUpDTO extends z.infer<typeof SignUpSchema> {}

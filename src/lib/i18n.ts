@@ -100,6 +100,12 @@ const translations: Record<string, Record<string, string>> = {
     'dontHaveAccount': '계정이 없으신가요?',
     'loginError': '로그인에 실패했습니다. 자격 증명을 확인하세요.',
     'registerError': '가입에 실패했습니다. 다시 시도해주세요.',
+    'email.required': '이메일을 입력해주세요.',
+    'email.invalid': '유효한 이메일을 입력해주세요.',
+    'password.required': '비밀번호를 입력해주세요.',
+    'password.minLength': '비밀번호는 최소 6자 이상이어야 합니다.',
+    'username.required': '사용자 이름을 입력해주세요.',
+    'username.minLength': '사용자 이름은 최소 2자 이상이어야 합니다.',시 시도해주세요.',
     
     // Navigation
     'home': '홈',
