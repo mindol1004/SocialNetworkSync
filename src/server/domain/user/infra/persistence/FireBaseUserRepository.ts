@@ -79,9 +79,12 @@ export const FireBaseUserRepository: UserRepositoryPort = {
   },
 
   async loginWithEmail(email: string, password: string): Promise<User | null> {
+    console.log('Attempting login with email:', email);
     const result = await signInWithEmailAndPassword(auth, email, password);
     const fireBaseUser = result.user;
+    console.log('Firebase User:', fireBaseUser);
     const userRef = ref(database, `users/${fireBaseUser.uid}`);
+    console.log('User Ref:', userRef);
     console.log('111==============================');
     const snapshot = await get(userRef);
     console.log('222==============================');

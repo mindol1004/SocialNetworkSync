@@ -4,13 +4,15 @@ import { getDatabase } from "firebase/database";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: `${process.env.FIREBASE_PROJECT_ID}.firebaseapp.com`,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
-  appId: process.env.FIREBASE_APP_ID,
-  databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com`
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: `${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.firebaseapp.com`,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: `${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.appspot.com`,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  databaseURL: `https://${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}-default-rtdb.firebaseio.com`
 };
+
+console.log('Firebase Config:', firebaseConfig);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
