@@ -19,7 +19,7 @@ function handleResponse<T>(response: AxiosResponse<ApiResponse<T>>): T {
 
   if (!data.success) {
     const error = data.error || { code: 'UNKNOWN_ERROR', message: 'Unknown error occurred' };
-    throw new AppError(error.message, response.status, error.code);
+    throw new AppError(error.message || 'UNKNOWN_ERROR', response.status, error.code);
   }
 
   return data.data;

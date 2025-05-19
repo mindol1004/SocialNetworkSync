@@ -44,7 +44,6 @@ export class UserController {
 
       const users = await this.findUserService.searchUsers(query);
       ResponseHandler.success(res, users);
-    });
-  }
+  });
 
 }
