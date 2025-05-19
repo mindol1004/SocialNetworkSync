@@ -82,8 +82,9 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     const result = await signInWithEmailAndPassword(auth, email, password);
     const fireBaseUser = result.user;
     const userRef = ref(database, `users/${fireBaseUser.uid}`);
+    console.log('111==============================');
     const snapshot = await get(userRef);
-    console.log('==============================');
+    console.log('222==============================');
     console.log(snapshot);
 
     if (snapshot.exists()) {
