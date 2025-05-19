@@ -16,9 +16,6 @@ export const FireBaseUserRepository: UserRepositoryPort = {
 
     await updateProfile(fireBaseUser, { displayName: user.username });
 
-    // Create users table reference
-    const usersRef = ref(database, 'users');
-    
     // Add new user data to users table
     await set(ref(database, `users/${fireBaseUser.uid}`), {
       uid: fireBaseUser.uid,
