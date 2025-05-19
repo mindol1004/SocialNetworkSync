@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { errorHandler } from './errorHandler';
 
-type ApiHandlerFn = (req: NextRequest, res: NextResponse) => Promise<void> | void;
+type ApiHandlerFn = (req: NextRequest) => Promise<Response>;
 
 export function apiHandler(handler: ApiHandlerFn) {
-  return async (req: NextRequest, res: NextResponse) => {
+  return async (req: NextRequest) => {
     try {
-      await handler(req, res);
+      return await handler(req);
     } catch (error) {
-      errorHandler(error as Error);
+      return errorHandler(error as Error);
     }
   };
 }
