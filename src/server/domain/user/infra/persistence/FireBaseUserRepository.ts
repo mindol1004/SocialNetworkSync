@@ -1,4 +1,3 @@
-
 import { User } from '@/shared/domain/user/model/User';
 import { UserRepositoryPort } from '@/shared/domain/user/repository/UserRepositoryPort';
 import { auth, database } from '@/server/infra/db/firebase/firebase';
@@ -28,7 +27,7 @@ export const FireBaseUserRepository: UserRepositoryPort = {
       createdAt: Date.now(),
       updatedAt: null
     });
-    
+
     return user;
   },
 
@@ -86,27 +85,32 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     const userRef = ref(database, `users/${fireBaseUser.uid}`);
     console.log('User Ref:', userRef);
     console.log('111==============================');
-    const snapshot = await get(userRef);
-    console.log('222==============================');
-    console.log(snapshot);
+    try {
+      const snapshot = await get(userRef);
+      console.log('222==============================');
+      console.log('Snapshot exists:', snapshot.exists());
 
-    if (snapshot.exists()) {
-      console.log(snapshot.val());
-      const users = snapshot.val();
-      const userId = Object.keys(users)[0];
-      const user = users[userId];
-      return {
-        id: fireBaseUser.uid,
-        email: fireBaseUser.email!,
-        password: '',
-        username: user.username,
-        role: user.role,
-        createdAt: user.createdAt,
-        photoURL: user.photoURL,
-        updatedAt: user.updatedAt,
-        followers: user.followers,
-        following: user.following,
-      };
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        const users = snapshot.val();
+        const userId = Object.keys(users)[0];
+        const user = users[userId];
+        return {
+          id: fireBaseUser.uid,
+          email: fireBaseUser.email!,
+          password: '',
+          username: user.username,
+          role: user.role,
+          createdAt: user.createdAt,
+          photoURL: user.photoURL,
+          updatedAt: user.updatedAt,
+          followers: user.followers,
+          following: user.following,
+        };
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return null;
     }
     return null;
   },
