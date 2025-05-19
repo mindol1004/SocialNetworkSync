@@ -18,7 +18,7 @@ import {
   CardTitle 
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { loginWithEmail, loginWithGoogle } from '@/lib/firebase'
+// import { loginWithEmail, loginWithGoogle } from '@/lib/firebase'
 
 export default function LoginPage() {
   const router = useRouter()
