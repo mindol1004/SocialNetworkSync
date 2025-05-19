@@ -16,20 +16,28 @@ export const FireBaseUserRepository: UserRepositoryPort = {
 
     await updateProfile(fireBaseUser, { displayName: user.username });
 
+    // Create users table reference
+    const usersRef = ref(database, 'users');
+    
+    // Add new user data to users table
     await set(ref(database, `users/${fireBaseUser.uid}`), {
       uid: fireBaseUser.uid,
       email: user.email,
-      password: user.password,
       username: user.username,
-      photoURL: '',
-      followers: null,
-      following: null,
+      photoURL: fireBaseUser.photoURL || '',
+      followers: {},
+      following: {},
       role: 'user',
       createdAt: Date.now(),
-      updatedAt: null
+      updatedAt: null,
+      displayName: user.username
     });
-    
-    return user;
+
+    return {
+      ...user,
+      id: fireBaseUser.uid,
+      photoURL: fireBaseUser.photoURL || ''
+    };
   },
 
   async update(user: User): Promise<User> {
