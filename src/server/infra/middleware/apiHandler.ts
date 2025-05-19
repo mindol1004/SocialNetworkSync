@@ -8,7 +8,7 @@ export function apiHandler(handler: ApiHandlerFn) {
     try {
       await handler(req, res);
     } catch (error) {
-      errorHandler(error as Error, req, res);
+      errorHandler(error as Error);
     }
   };
 }

@@ -1,8 +1,8 @@
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AppError } from '@/shared/error/AppError';
 
-export function errorHandler(error: Error, req: NextRequest) {
+export function errorHandler(error: Error) {
   console.error('Error occurred:', error);
 
   if (error instanceof AppError) {
