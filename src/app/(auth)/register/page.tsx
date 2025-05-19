@@ -63,11 +63,6 @@ export default function RegisterPage() {
       return;
     }
 
-    if (!agreeTerms) {
-      setError("You must agree to the Terms of Service and Privacy Policy");
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -188,7 +183,7 @@ export default function RegisterPage() {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Password must be at least 8 characters long
+                Password must be at least 6 characters long
               </p>
             </div>
 
