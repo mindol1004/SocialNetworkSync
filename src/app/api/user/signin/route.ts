@@ -1,16 +1,14 @@
-
-import { NextRequest, NextResponse } from 'next/server';
-import { UserController } from '@/server/domain/user/controller/UserController';
-import { FireBaseUserRepository } from '@/server/domain/user/infra/persistence/FireBaseUserRepository';
 import { SignInUserService } from '@/server/domain/user/appliation/SignInUserService';
-import { handleRequest } from '@/server/utils/handleRequest';
+import { apiHandler } from '@/server/infra/middleware/apiHandler';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { ResponseHandler } from '@/server/infra/response/responseHandler';
 
-const userRepository = FireBaseUserRepository;
-const signInUserService = SignInUserService(userRepository);
-
-export const POST = handleRequest(async (req: NextRequest) => {
-  const body = await req.json();
-  const { email, password } = body;
-  const user = await signInUserService.loginWithEmail(email, password);
-  return NextResponse.json({ success: true, data: user });
-});
+export const POST = { 
+  signIn: (signInUserService: ReturnType<typeof SignInUserService>) => ({
+    handler: apiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
+      const { email, password } = req.body;
+      const user = await signInUserService.loginWithEmail(email, password);
+      ResponseHandler.success(res, user);
+    })
+  })
+};

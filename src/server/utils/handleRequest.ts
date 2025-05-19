@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { BizError } from '@/shared/error/BizError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatus } from '@/shared/constants/HttpStatus';
 
 export function handleRequest(
@@ -11,7 +11,7 @@ export function handleRequest(
     } catch (err) {
       console.error('❌ Global Error:', err);
 
-      if (err instanceof BizError) {
+      if (err instanceof AppError) {
         return NextResponse.json(
           { code: err.status.code, message: err.message },
           { status: err.status.code }
