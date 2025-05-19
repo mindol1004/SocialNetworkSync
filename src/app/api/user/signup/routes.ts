@@ -8,7 +8,7 @@ const userRepository = FireBaseUserRepository;
 const signUpUserService = SignUpUserService(userRepository);
 
 export const POST = apiHandler(async (req: NextRequest) => {
-  const { email, password } = await req.json();
-  const user = await signUpUserService.createUser(email, password);
+  const { email, password, username } = await req.json();
+  const user = await signUpUserService.createUser();
   return ResponseHandler.success(user);
 });
