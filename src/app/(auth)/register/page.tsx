@@ -21,6 +21,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { registerWithEmail, loginWithGoogle } from '@/lib/firebase'
 import { useTranslation } from '@/lib/i18n'
 import { api } from '@/lib/axios';
+import { SignUpDTO } from '@/shared/domain/user/dto/SignUpDTO';
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -63,7 +64,11 @@ export default function RegisterPage() {
     try {
       // await registerWithEmail(email, password, name)
 
-      await api.post('/api/user/signup', { email, password, name });
+      await api.post('/api/user/signup', { 
+        email, 
+        password, 
+        username: name // using name as username
+      } as SignUpDTO);
       
       router.push('/dashboard')
     } catch (err: any) {
