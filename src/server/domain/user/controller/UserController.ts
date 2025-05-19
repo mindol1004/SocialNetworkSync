@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ResponseHandler } from '@/server/infra/response/responseHandler';
 import { apiHandler } from '@/server/infra/middleware/apiHandler';
