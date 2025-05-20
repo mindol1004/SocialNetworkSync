@@ -1,10 +1,22 @@
 "use server";
 
-import { SignUpDTO, SignUpSchema } from "@/shared/domain/user/dto/SignUpDTO";
-import { api } from "@/lib/axios";
+import { SignUpDTO, SignUpSchema, SignUpMapper } from "@/shared/domain/user/dto/SignUpDTO";
+import { SignUpUserService } from "@/server/domain/user/appliation/SignUpUserService";
+import { FireBaseUserRepository } from "@/server/domain/user/infra/persistence/FireBaseUserRepository";
+import { redirect } from "next/navigation";
+
+const userRepository = FireBaseUserRepository;
+const signUpUserService = SignUpUserService(userRepository);
 
 export async function signUp(formData: FormData) {
-  // Validate data with Zod
+  const data = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+    agreeTerms: formData.get("agreeTerms") === "on"
+  };
+
   const result = SignUpSchema.safeParse(data);
 
   if (!result.success) {
@@ -12,19 +24,9 @@ export async function signUp(formData: FormData) {
   }
 
   try {
-    // Make request to your API
-    const response = await api.post("/api/user/signup", data);
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to sign up");
-    }
-
-    const userData = await response.json();
-
-    return userData;
-  } catch (error) {
-    console.error("Sign up error:", error);
-    throw error;
+    const user = await signUpUserService.createUser(SignUpMapper.toEntity(result.data));
+    redirect("/dashboard");
+  } catch (error: any) {
+    throw new Error(error.message || "Failed to sign up");
   }
 }
