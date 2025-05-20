@@ -28,12 +28,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "@/lib/i18n";
 import { signUp } from "./actions";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const [state, formAction] = useFormState(signUp, { error: "", success: false });
+  const [state, formAction] = useActionState(signUp, { error: "", success: false });
   const { pending } = useFormStatus();
 
   return (
