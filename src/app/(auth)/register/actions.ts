@@ -23,7 +23,6 @@ export async function signUp(prevState: ActionState, formData: FormData): Promis
   };
 
   const result = SignUpSchema.safeParse(data);
-  console.log(result);
 
   if (!result.success) {
     return {
@@ -33,12 +32,13 @@ export async function signUp(prevState: ActionState, formData: FormData): Promis
   }
 
   try {
-    await signUpUserService.createUser(SignUpMapper.toEntity(result.data));
-    redirect("/dashboard");
+    await signUpUserService.createUser(SignUpMapper.toEntity(result.data));    
   } catch (error: any) {
     return {
       error: error.message || "Failed to sign up",
       success: false
     };
   }
+
+  redirect("/dashboard");
 }

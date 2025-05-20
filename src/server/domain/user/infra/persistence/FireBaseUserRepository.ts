@@ -16,7 +16,7 @@ export const FireBaseUserRepository: UserRepositoryPort = {
 
     await updateProfile(fireBaseUser, { displayName: user.username });
 
-    await set(ref(database, `users/${fireBaseUser.uid}`), {
+    await set(ref(database, 'users'), {
       uid: fireBaseUser.uid,
       email: user.email,
       password: user.password,
@@ -40,6 +40,7 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     const usersRef = ref(database, 'users');
     const userQuery = query(usersRef, orderByChild('email'), equalTo(email));
     const snapshot = await get(userQuery);
+    console.log(snapshot);
 
     if (snapshot.exists()) {
       const users = snapshot.val();
