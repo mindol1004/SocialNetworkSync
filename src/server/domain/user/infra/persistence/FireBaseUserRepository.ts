@@ -16,7 +16,7 @@ export const FireBaseUserRepository: UserRepositoryPort = {
 
     await updateProfile(fireBaseUser, { displayName: user.username });
 
-    await set(ref(database, 'users'), {
+    await set(ref(database, `users/${fireBaseUser.uid}`), {
       uid: fireBaseUser.uid,
       email: user.email,
       password: user.password,
