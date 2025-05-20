@@ -1,7 +1,6 @@
-
 "use server";
 
-import { SignUpDTO, SignUpSchema, SignUpMapper } from "@/shared/domain/user/dto/SignUpDTO";
+import { SignUpSchema, SignUpMapper } from "@/shared/domain/user/dto/SignUpDTO";
 import { SignUpUserService } from "@/server/domain/user/appliation/SignUpUserService";
 import { FireBaseUserRepository } from "@/server/domain/user/infra/persistence/FireBaseUserRepository";
 import { redirect } from "next/navigation";
@@ -14,7 +13,7 @@ export type ActionState = {
   success?: boolean;
 };
 
-export async function signUp(prevState: ActionState | null, formData: FormData): Promise<ActionState> {
+export async function signUp(prevState: ActionState, formData: FormData): Promise<ActionState> {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -27,13 +26,13 @@ export async function signUp(prevState: ActionState | null, formData: FormData):
 
   if (!result.success) {
     return {
-      error: result.error.errors[0]?.message || "Invalid data",
+      error: result.error.errors[0]?.message,
       success: false
     };
   }
 
   try {
-    const user = await signUpUserService.createUser(SignUpMapper.toEntity(result.data));
+    await signUpUserService.createUser(SignUpMapper.toEntity(result.data));
     redirect("/dashboard");
   } catch (error: any) {
     return {

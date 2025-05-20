@@ -28,7 +28,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "@/lib/i18n";
 import { signUp } from "./actions";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 export default function RegisterPage() {
   const { t } = useTranslation();
