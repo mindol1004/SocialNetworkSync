@@ -1,3 +1,4 @@
+
 "use server";
 
 import { SignUpDTO, SignUpSchema, SignUpMapper } from "@/shared/domain/user/dto/SignUpDTO";
@@ -8,7 +9,12 @@ import { redirect } from "next/navigation";
 const userRepository = FireBaseUserRepository;
 const signUpUserService = SignUpUserService(userRepository);
 
-export async function signUp(formData: FormData) {
+export type ActionState = {
+  error?: string;
+  success?: boolean;
+};
+
+export async function signUp(prevState: ActionState | null, formData: FormData): Promise<ActionState> {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -20,13 +26,19 @@ export async function signUp(formData: FormData) {
   const result = SignUpSchema.safeParse(data);
 
   if (!result.success) {
-    throw new Error(result.error.errors[0]?.message || "Invalid data");
+    return {
+      error: result.error.errors[0]?.message || "Invalid data",
+      success: false
+    };
   }
 
   try {
     const user = await signUpUserService.createUser(SignUpMapper.toEntity(result.data));
     redirect("/dashboard");
   } catch (error: any) {
-    throw new Error(error.message || "Failed to sign up");
+    return {
+      error: error.message || "Failed to sign up",
+      success: false
+    };
   }
 }

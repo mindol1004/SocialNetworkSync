@@ -33,7 +33,7 @@ import { useFormStatus } from "react-dom";
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [state, formAction] = useFormState(signUp, { error: "", success: false });
   const { pending } = useFormStatus();
 
   return (
@@ -54,18 +54,12 @@ export default function RegisterPage() {
           <CardDescription>{t("joinToConnect")}</CardDescription>
         </CardHeader>
 
-        <form action={async (formData) => {
-          try {
-            await signUp(formData);
-          } catch (err: any) {
-            setError(err.message);
-          }
-        }}>
+        <form action={formAction}>
           <CardContent className="space-y-4">
-            {error && (
+            {state?.error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
               </Alert>
             )}
 
