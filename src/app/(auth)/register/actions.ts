@@ -23,6 +23,7 @@ export async function signUp(prevState: ActionState, formData: FormData): Promis
   };
 
   const result = SignUpSchema.safeParse(data);
+  console.log(result);
 
   if (!result.success) {
     return {

@@ -60,7 +60,7 @@ export default function RegisterPage() {
             {state?.error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{state.error}</AlertDescription>
+                <AlertDescription>{t(state.error)}</AlertDescription>
               </Alert>
             )}
 
