@@ -34,6 +34,7 @@ export async function signUp(prevState: ActionState, formData: FormData): Promis
   try {
     await signUpUserService.createUser(SignUpMapper.toEntity(result.data));    
   } catch (error: any) {
+    console.error("Error signing up:", error);
     return {
       error: error.message || "Failed to sign up",
       success: false

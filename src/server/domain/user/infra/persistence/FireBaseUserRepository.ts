@@ -40,10 +40,14 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     const usersRef = ref(database, 'users');
     const userQuery = query(usersRef, orderByChild('email'), equalTo(email));
     const snapshot = await get(userQuery);
-    console.log(snapshot);
+
+    console.log(snapshot.exists());
 
     if (snapshot.exists()) {
       const users = snapshot.val();
+      console.log('=======================');
+      console.log(users);
+      console.log('=======================');
       return users;
     }
 
