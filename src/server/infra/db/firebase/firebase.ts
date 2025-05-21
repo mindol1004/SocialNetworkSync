@@ -12,12 +12,10 @@ const firebaseConfig = {
   databaseURL: `https://${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID?.trim()}-default-rtdb.firebaseio.com`
 };
 
-console.log('Firebase Config:', firebaseConfig);
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 const googleProvider = new GoogleAuthProvider();
 
-export { auth, database, googleProvider };
+export { app, auth, database, googleProvider };

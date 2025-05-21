@@ -1,6 +1,7 @@
 'use client'
 
 import MainLayout from '@/components/layout/MainLayout'
+import { AuthProvider } from '@/components/providers/AuthProviders';
 
 export default function Layout({
   children,
@@ -8,8 +9,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <MainLayout>
-      {children}
-    </MainLayout>
+    <AuthProvider>
+      <MainLayout>
+        {children}
+      </MainLayout>
+    </AuthProvider>
   );
 }
