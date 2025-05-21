@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, Check, Users, Globe, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { getCurrentUser } from '@/lib/firebase'
+import { getCurrentUser } from '@/server/infra/db/firebase/firebase';
 
 export default function HomePage() {
   const router = useRouter()

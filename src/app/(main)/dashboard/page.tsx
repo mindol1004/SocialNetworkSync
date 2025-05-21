@@ -5,7 +5,6 @@ import { useTranslation } from '@/lib/i18n'
 import { PlusCircle, Loader } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getPosts } from '@/lib/firebase'
 
 export default function DashboardPage() {
   const { t } = useTranslation();

@@ -18,4 +18,8 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 const googleProvider = new GoogleAuthProvider();
 
+export const getCurrentUser = () => {
+  return auth.currentUser;
+};
+
 export { auth, database, googleProvider };
