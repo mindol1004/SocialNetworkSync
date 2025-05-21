@@ -18,10 +18,12 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { signIn } from "./actions";
+import { useAuthStore } from '@/store/authStore'
 
 export default function LoginPage() {
   const { t } = useTranslation()
   const [state, formAction, isPending] = useActionState(signIn, {});
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleGoogleLogin = async () => {
     // setError('')

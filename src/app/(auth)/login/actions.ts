@@ -4,7 +4,6 @@ import { SignInSchema } from "@/shared/domain/user/dto/SignInDTO";
 import { SignInUserService } from "@/server/domain/user/appliation/SignInUserService";
 import { FireBaseUserRepository } from "@/server/domain/user/infra/persistence/FireBaseUserRepository";
 import { redirect } from "next/navigation";
-import { useAuthStore } from "@/store/authStore";
 
 const userRepository = FireBaseUserRepository;
 const signInUserService = SignInUserService(userRepository);
@@ -31,8 +30,7 @@ export async function signIn(prevState: ActionState, formData: FormData): Promis
 
   try {
     
-    const user = await signInUserService.loginWithEmail(result.data.email, result.data.password);
-    useAuthStore.getState().setUser(user);
+    await signInUserService.loginWithEmail(result.data.email, result.data.password);
     
   } catch (error: any) {
     return {
