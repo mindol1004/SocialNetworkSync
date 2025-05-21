@@ -1,7 +1,7 @@
 'use client'
 
 import { create } from 'zustand';
-import { User } from 'firebase/auth';
+import { User } from '@/shared/domain/user/model/User';
 
 interface AuthState {
   user: User | null;
