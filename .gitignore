@@ -15,3 +15,5 @@ out
 .github
 .config
 attached_assets
+.idx/dev.nix
+.vscode/settings.json
