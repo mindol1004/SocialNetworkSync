@@ -40,6 +40,11 @@ export default function Header() {
     router.push('/dashboard?new=post');
   };
 
+  const handleLogout = () => {
+    // logout();
+    // router.push('/login');
+  }
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       <div className="container flex h-16 items-center px-4">
