@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '@/lib/i18n'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Lock, LogIn, AlertCircle } from 'lucide-react'
@@ -17,11 +17,46 @@ import {
   CardTitle 
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { signIn } from "./actions";
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '@/server/infra/db/firebase/firebase'
+import { useRouter } from 'next/navigation'
+import { SignInSchema } from '@/shared/domain/user/dto/SignInDTO'
 
 export default function LoginPage() {
   const { t } = useTranslation()
-  const [state, formAction, isPending] = useActionState(signIn, {});
+  const router = useRouter()
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    const formData = new FormData(e.target as HTMLFormElement)
+    const data = {
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
+    }
+
+    const parsed = SignInSchema.safeParse(data)
+    if (!parsed.success) {
+      const firstError = Object.values(parsed.error.flatten().fieldErrors)[0]?.[0]
+      setError(firstError || 'Validation failed.')
+      return
+    }
+
+    try {
+      setIsPending(true)
+      const result = await signInWithEmailAndPassword(auth, data.email, data.password)
+      if (result.user) {
+        router.push('/dashboard')
+      }
+    } catch (err: any) {
+      setError(err.message || 'Sign in failed.')
+    } finally {
+      setIsPending(false)
+    }
+  }
 
   const handleGoogleLogin = async () => {
     // setError('')
@@ -54,12 +89,12 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         
-        <form action={formAction}>
+        <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
-            {state?.error && (
+            {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{t(state.error)}</AlertDescription>
+                <AlertDescription>{t(error)}</AlertDescription>
               </Alert>
             )}
             

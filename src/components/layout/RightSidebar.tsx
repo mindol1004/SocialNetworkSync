@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getDatabase, ref, get } from "firebase/database";
-import { followUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/store/authStore";
 
@@ -103,32 +102,32 @@ export default function RightSidebar() {
   }, [user]);
 
   const handleFollow = async (userId: string) => {
-    if (!user) {
-      router.push('/login');
-      return;
-    }
+    // if (!user) {
+    //   router.push('/login');
+    //   return;
+    // }
     
-    try {
-      await followUser(user.uid, userId);
+    // try {
+    //   await followUser(user.uid, userId);
       
-      // Update local state
-      setFollowingStates(prev => ({
-        ...prev,
-        [userId]: true
-      }));
+    //   // Update local state
+    //   setFollowingStates(prev => ({
+    //     ...prev,
+    //     [userId]: true
+    //   }));
       
-      toast({
-        title: "Success",
-        description: "You are now following this user"
-      });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to follow user";
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive"
-      });
-    }
+    //   toast({
+    //     title: "Success",
+    //     description: "You are now following this user"
+    //   });
+    // } catch (error) {
+    //   const errorMessage = error instanceof Error ? error.message : "Failed to follow user";
+    //   toast({
+    //     title: "Error",
+    //     description: errorMessage,
+    //     variant: "destructive"
+    //   });
+    // }
   };
 
   return (
@@ -168,7 +167,7 @@ export default function RightSidebar() {
                 <div className="flex items-center">
                   <Avatar className="h-10 w-10 mr-3">
                     <AvatarImage src={suggestedUser.photoURL} alt={suggestedUser.displayName} />
-                    <AvatarFallback>{suggestedUser.displayName.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{suggestedUser.displayName}</AvatarFallback>
                   </Avatar>
                   <div>
                     <Link 

@@ -34,8 +34,8 @@ export const FireBasePostRepository: PostRepositoryPort = {
     const snapshot = await get(postsRef);
     if (!snapshot.exists()) return [];
 
-    const posts = snapshot.val();
-    return Object.values(posts).filter((post: Post) => post.userId === userId);
+    const posts = Object.values(snapshot.val()) as Post[];
+    return posts.filter((post) => post.userId === userId);
   },
 
   async update(post: Post): Promise<Post> {

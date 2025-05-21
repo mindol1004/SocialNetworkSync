@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/i18n";
 import { useAuthStore } from "@/store/authStore";
-import { logoutUser } from "@/lib/firebase";
+// import { logoutUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 import { Home, Search, Bell, Mail, Bookmark, User, Settings, LogOut, PenSquare } from 'lucide-react';
 
@@ -29,7 +29,7 @@ export default function Sidebar() {
 
   const handleLogout = async () => {
     try {
-      await logoutUser();
+      // await logoutUser();
       clearUser();
       toast({
         title: "로그아웃 성공",

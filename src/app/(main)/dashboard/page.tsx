@@ -5,12 +5,14 @@ import { useTranslation } from '@/lib/i18n'
 import { PlusCircle, Loader } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { api } from '@lib/axios';
+import { Post } from '@/shared/domain/post/model/Post'
 
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { data: posts, isLoading, error } = useQuery({
     queryKey: ['posts'],
-    queryFn: getPosts
+    queryFn: () => api.get<Post[]>('/api/post')
   })
 
   return (
@@ -51,7 +53,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         ) : posts && posts.length > 0 ? (
-          posts.map((post: any) => (
+          posts.map((post: Post) => (
             <Card key={post.id}>
               <CardHeader className="p-4">
                 <div className="flex items-center gap-3">
