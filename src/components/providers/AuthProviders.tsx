@@ -2,8 +2,8 @@
 
 import type React from 'react';
 import { useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { app } from '@/server/infra/db/firebase/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/server/infra/db/firebase/firebase';
 import { useAuthStore } from '@/store/authStore';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -11,7 +11,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setUser, setLoading, loading } = useAuthStore();
 
   useEffect(() => {
-    const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
