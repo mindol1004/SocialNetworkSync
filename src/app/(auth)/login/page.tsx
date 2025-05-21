@@ -18,13 +18,10 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { signIn } from "./actions";
-import { useFormStatus } from 'react-dom'
 
 export default function LoginPage() {
   const { t } = useTranslation()
-  const [state, formAction] = useActionState(signIn, { error: "", success: false });
-  const { pending } = useFormStatus();
-  console.log(pending);
+  const [state, formAction, isPending] = useActionState(signIn, {});
 
   const handleGoogleLogin = async () => {
     // setError('')
@@ -103,9 +100,9 @@ export default function LoginPage() {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={pending}
+              disabled={isPending}
             >
-              {pending ? (
+              {isPending ? (
                 <span className="flex items-center">
                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -138,7 +135,7 @@ export default function LoginPage() {
                 variant="outline" 
                 className="bg-white hover:bg-gray-50 text-black"
                 onClick={handleGoogleLogin}
-                disabled={pending}
+                disabled={isPending}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 mr-2">
                   <path fill="#EA4335" d="M12 5c1.617 0 3.101.554 4.28 1.478l3.301-3.319C17.698 1.13 15.012 0 12 0 7.392 0 3.375 2.54 1.332 6.519l3.857 2.98C6.223 6.652 8.918 5 12 5z" />

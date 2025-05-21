@@ -28,14 +28,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "@/lib/i18n";
 import { signUp } from "./actions";
-import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 
 export default function RegisterPage() {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const [state, formAction] = useActionState(signUp, { error: "", success: false });
-  const { pending } = useFormStatus();
+  const [state, formAction, isPending] = useActionState(signUp, {});
 
   return (
     <div className="w-full max-w-md">
@@ -151,8 +149,8 @@ export default function RegisterPage() {
               </Label>
             </div>
 
-            <Button type="submit" className="w-full" disabled={pending}>
-              {pending ? (
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? (
                 <span className="flex items-center">
                   <svg
                     className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
