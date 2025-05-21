@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useActionState } from 'react'
 import { useTranslation } from '@/lib/i18n'
 import Link from 'next/link'
 import { ArrowLeft, Mail, Lock, LogIn, AlertCircle } from 'lucide-react'
@@ -18,37 +17,14 @@ import {
   CardTitle 
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-// import { loginWithEmail, loginWithGoogle } from '@/lib/firebase'
-import { api } from '@/lib/axios';
+import { signIn } from "./actions";
+import { useFormStatus } from 'react-dom'
 
 export default function LoginPage() {
-  const router = useRouter()
   const { t } = useTranslation()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    try {
-      if (!email || !password) {
-        throw new Error('Please enter both email and password')
-      }
-
-      await api.post('/api/user/signin', { email, password });
-      
-      router.push('/dashboard')
-    } catch (err: any) {
-      console.error('Login error:', err)
-      setError(err.message || 'Failed to sign in. Please check your credentials.')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const [state, formAction] = useActionState(signIn, { error: "", success: false });
+  const { pending } = useFormStatus();
+  console.log(pending);
 
   const handleGoogleLogin = async () => {
     // setError('')
@@ -81,12 +57,12 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         
-        <form onSubmit={handleEmailLogin}>
+        <form action={formAction}>
           <CardContent className="space-y-4">
-            {error && (
+            {state?.error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{t(state.error)}</AlertDescription>
               </Alert>
             )}
             
@@ -96,11 +72,10 @@ export default function LoginPage() {
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
                   id="email" 
+                  name="email"
                   type="email" 
                   placeholder="you@example.com" 
                   className="pl-10"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -117,10 +92,9 @@ export default function LoginPage() {
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
                   id="password" 
+                  name="password"
                   type="password" 
                   className="pl-10"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
@@ -129,9 +103,9 @@ export default function LoginPage() {
             <Button 
               type="submit" 
               className="w-full" 
-              disabled={loading}
+              disabled={pending}
             >
-              {loading ? (
+              {pending ? (
                 <span className="flex items-center">
                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -164,7 +138,7 @@ export default function LoginPage() {
                 variant="outline" 
                 className="bg-white hover:bg-gray-50 text-black"
                 onClick={handleGoogleLogin}
-                disabled={loading}
+                disabled={pending}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5 mr-2">
                   <path fill="#EA4335" d="M12 5c1.617 0 3.101.554 4.28 1.478l3.301-3.319C17.698 1.13 15.012 0 12 0 7.392 0 3.375 2.54 1.332 6.519l3.857 2.98C6.223 6.652 8.918 5 12 5z" />

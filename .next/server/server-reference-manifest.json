@@ -1,17 +1,28 @@
 {
   "node": {
-    "60b205675c460b00a1dffea9c1917e356d661ebd1d": {
+    "60e0bcda4a674e790b3e2c62f4bf4622a6849e3278": {
       "workers": {
         "app/(auth)/register/page": {
-          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Frunner%2Fworkspace%2Fsrc%2Fapp%2F(auth)%2Fregister%2Factions.ts%22%2C%5B%7B%22id%22%3A%2260b205675c460b00a1dffea9c1917e356d661ebd1d%22%2C%22exportedName%22%3A%22signUp%22%7D%5D%5D%5D&__client_imported__=true!",
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Frunner%2Fworkspace%2Fsrc%2Fapp%2F(auth)%2Fregister%2Factions.ts%22%2C%5B%7B%22id%22%3A%2260e0bcda4a674e790b3e2c62f4bf4622a6849e3278%22%2C%22exportedName%22%3A%22signUp%22%7D%5D%5D%5D&__client_imported__=true!",
           "async": false
         }
       },
       "layer": {
         "app/(auth)/register/page": "action-browser"
       }
+    },
+    "60f9acda7117d34112baa67794ea7b24b405327b38": {
+      "workers": {
+        "app/(auth)/login/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Frunner%2Fworkspace%2Fsrc%2Fapp%2F(auth)%2Flogin%2Factions.ts%22%2C%5B%7B%22id%22%3A%2260f9acda7117d34112baa67794ea7b24b405327b38%22%2C%22exportedName%22%3A%22signIn%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(auth)/login/page": "action-browser"
+      }
     }
   },
   "edge": {},
-  "encryptionKey": "cJqUMFEmvPlfRttRg5CXk0+AlLUrEV6HXaBWSr9u4Ng="
+  "encryptionKey": "Og03cFh9YnvwnX+D12kBbCN3b0CKy76mkMFFDlPg0rg="
 }

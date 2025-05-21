@@ -22,8 +22,8 @@ export const FireBaseUserRepository: UserRepositoryPort = {
       password: user.password,
       username: user.username,
       photoURL: '',
-      followers: null,
-      following: null,
+      followers: user.followers,
+      following: user.following,
       role: 'user',
       createdAt: Date.now(),
       updatedAt: null
@@ -41,13 +41,8 @@ export const FireBaseUserRepository: UserRepositoryPort = {
     const userQuery = query(usersRef, orderByChild('email'), equalTo(email));
     const snapshot = await get(userQuery);
 
-    console.log(snapshot.exists());
-
     if (snapshot.exists()) {
       const users = snapshot.val();
-      console.log('=======================');
-      console.log(users);
-      console.log('=======================');
       return users;
     }
 

@@ -41,5 +41,5 @@ export async function signUp(prevState: ActionState, formData: FormData): Promis
     };
   }
 
-  redirect("/dashboard");
+  redirect("/login");
 }

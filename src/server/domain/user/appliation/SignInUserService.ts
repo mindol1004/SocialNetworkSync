@@ -9,6 +9,6 @@ export const SignInUserService = (userRepository: UserRepositoryPort) => ({
     if (!user) {
       throw UserErrors.userNotFound(email);
     }
-    return await userRepository.loginWithEmail(email, password);
+    return user;
   }
 });
